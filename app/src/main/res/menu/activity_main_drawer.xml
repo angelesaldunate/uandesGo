@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_create"
+            android:icon="@drawable/ic_create_black_24dp"
+            android:title="Crear Ruta" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="Buscar Ruta" />
+        <item
+            android:id="@+id/nav_myroutes"
+            android:icon="@drawable/ic_my_location_black_24dp"
+            android:title="Mis Rutas" />
+        <item
+            android:id="@+id/nav_request"
+            android:icon="@drawable/ic_call_received_black_24dp"
+            android:title="Rutas Pedidas" />
+    </group>
+
+    <item android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_adb_black_24dp"
+                android:title="Perfil" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_cancel_black_24dp"
+                android:title="LogOut" />
+        </menu>
+    </item>
+
+</menu>
