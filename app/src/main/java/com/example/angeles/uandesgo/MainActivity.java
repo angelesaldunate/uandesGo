@@ -43,16 +43,13 @@ public class MainActivity extends AppCompatActivity
         TextView email = headerView.findViewById(R.id.emailView);
 
 
-        CredentialManage nueva = new CredentialManage();
+        /*CredentialManage nueva = new CredentialManage();
         if (!nueva.verificarCredenciales(this)) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra(EXTRA_MESSAGE,"Sent!");
             //iniciaractividad solo si no existe anteriormente
             startActivityForResult(intent,SEND_MESSAGE);
-        }
-
-
-
+        }*/
     }
 
     @Override
