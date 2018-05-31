@@ -1,22 +1,78 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.angeles.uandesgo.CreateRouteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        tools:text="Crear Ruta" />
 
-    <EditText
-        android:id="@+id/editText"
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/capriola"
+        android:text="Seleccionar sector de destino"
+        android:textSize="18sp"
+        android:typeface="sans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <TableLayout
+        android:layout_width="368dp"
+        android:layout_height="368dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/santiago_map"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        tools:layout_editor_absoluteX="8dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="184dp"
+                android:layout_height="184dp"
+                android:background="@android:color/transparent"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="445dp" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="184dp"
+                android:layout_height="184dp"
+                android:background="@android:color/transparent"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="445dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="184dp"
+                android:layout_height="184dp"
+                android:background="@android:color/transparent"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="445dp" />
+
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="184dp"
+                android:layout_height="184dp"
+                android:background="@android:color/transparent"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="445dp" />
+        </TableRow>
+    </TableLayout>
+
+
+</android.support.constraint.ConstraintLayout>

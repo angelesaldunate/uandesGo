@@ -23,4 +23,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="angeles_aldunate">Ángeles Aldunate</string>
+    <string name="sample_address">El Frutal 4537, Lo Barnechea</string>
+    <string name="sample_career">Ingeniería</string>
+    <string name="sample_email">adaldunate@miuandes.cl</string>
 </resources>
