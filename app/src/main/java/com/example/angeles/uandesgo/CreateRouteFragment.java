@@ -1,12 +1,31 @@
 package com.example.angeles.uandesgo;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.Toast;
+
+import com.example.angeles.uandesgo.db.AppDatabase;
+import com.example.angeles.uandesgo.db.Place;
+import com.example.angeles.uandesgo.db.PlaceViewModel;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -22,6 +41,8 @@ public class CreateRouteFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String DATABASE_NAME = "movies_db";
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -67,6 +88,51 @@ public class CreateRouteFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_create_route, container, false);
     }
 
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        String[] places = new String[] {
+                "Escuela Militar","Los Dominicos"
+
+        };
+        ListView lv = (ListView) view.findViewById(R.id.list_destinations);
+//        PlaceViewModel mplaceViewModel = ViewModelProviders.of(this).get(PlaceViewModel.class);
+//        LiveData<List<Place>> lp = mplaceViewModel.getmAllPlaces();
+//        PlaceAdapter adapter = new PlaceAdapter(getContext(),lp.getValue());
+//        lv.setAdapter(adapter);
+        final List<String> place_list = new ArrayList<String>(Arrays.asList(places));
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity() , android.R.layout.simple_list_item_1,place_list);
+
+        lv.setAdapter(arrayAdapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                boolean checked1 = ((RadioButton) getView().findViewById(R.id.radioButton_going) ).isChecked();
+                boolean checked2 = ((RadioButton) getView().findViewById(R.id.radioButton_leaving) ).isChecked();
+
+                String destin = "";
+                if (checked1)
+                    destin = "Going";
+                if (checked2)
+                    destin = "Leaving";
+
+
+              //  Toast.makeText(getContext(),arrayAdapter.getItem(i),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),destin,Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+
+    }
+
+
+
+
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -104,4 +170,22 @@ public class CreateRouteFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radioButton_going:
+                if (checked)
+                    // going
+                    break;
+            case R.id.radioButton_leaving:
+                if (checked)
+                    // Leaving
+                    break;
+        }
+    }
+
+
 }

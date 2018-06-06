@@ -48,24 +48,31 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/textView_title_create_route"
             tools:layout_editor_absoluteX="52dp">
+            <RadioGroup
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
-            <RadioButton
-                android:id="@+id/radioButton_going"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/capriola"
-                android:text="@string/voy"
-                android:textSize="14sp" />
+                <RadioButton
+                    android:id="@+id/radioButton_going"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/capriola"
+                    android:text="@string/voy"
+                    android:textSize="14sp" />
 
-            <RadioButton
-                android:id="@+id/radioButton_leaving"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/capriola"
-                android:text="@string/vuelvo"
-                android:textSize="14sp" />
+                <RadioButton
+                    android:id="@+id/radioButton_leaving"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/capriola"
+                    android:text="@string/vuelvo"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
+
         </LinearLayout>
     </LinearLayout>
 
@@ -115,7 +122,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout_direction" />
 
     <ListView
-        android:id="@+id/frameLayout_destinations"
+        android:id="@+id/list_destinations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

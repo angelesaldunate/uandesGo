@@ -27,7 +27,7 @@
     <string name="sample_career">Ingeniería</string>
     <string name="sample_email">adaldunate@miuandes.cl</string>
     <string name="Norte">Norte</string>
-    <string name="Nororiente">Nororiente</string>
+    <string name="Nororiente">Oriente</string>
     <string name="Norponiente">Norponiente</string>
     <string name="Centro">Centro</string>
     <string name="Sur">Sur</string>
@@ -40,12 +40,6 @@
     <string name="direcci_n">Dirección</string>
     <string name="pide_un_avent_n">Pide un aventón</string>
     <string-array name="Sectors">
-        <item>@string/Norte</item>
         <item>@string/Nororiente</item>
-        <item>@string/Norponiente</item>
-        <item>@string/Centro</item>
-        <item>@string/Sur</item>
-        <item>@string/Suroriente</item>
-        <item>@string/Surponiente</item>
     </string-array>
 </resources>
