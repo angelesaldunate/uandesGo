@@ -1,12 +1,9 @@
 package com.example.angeles.uandesgo;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,7 +19,6 @@ import android.widget.TextView;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
 import com.example.angeles.uandesgo.db.Place;
-import com.example.angeles.uandesgo.db.PlaceViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +28,8 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     static final int SEND_MESSAGE = 1;
-    private PlaceViewModel placeModel;
+    private static final String DATABASE_NAME = "movies_db";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,20 +52,26 @@ public class MainActivity extends AppCompatActivity
         View headerView = (navigationView.getHeaderView(0));
         TextView email = headerView.findViewById(R.id.emailView);
 
-        placeModel = ViewModelProviders.of(this).get(PlaceViewModel.class);
-        List<Place> instplace = new ArrayList<>();
-        instplace.add(new Place("Escuela Militar", "Oriente"));
-        placeModel.insert(instplace);
+
+        final AppDatabase formDatabase=Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
 
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Place> instplace = new ArrayList<>();
+                formDatabase.placeDao ().insertAll(new Place("Escuela Militar", "Oriente"));
+            }
+        }) .start();
 
+        /*
         CredentialManage nueva = new CredentialManage();
         if (!nueva.verificarCredenciales(this)) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra(EXTRA_MESSAGE,"Sent!");
             //iniciaractividad solo si no existe anteriormente
             startActivityForResult(intent,SEND_MESSAGE);
-        }
+        }*/
     }
 
     @Override

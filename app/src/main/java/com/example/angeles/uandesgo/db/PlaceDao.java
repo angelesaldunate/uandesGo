@@ -17,7 +17,7 @@ import java.util.List;
 public interface PlaceDao {
 
     @Query("SELECT * FROM place")
-    LiveData<List<Place>> getAllPlaces();
+    List<Place> getAllPlaces();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(Place... place);
