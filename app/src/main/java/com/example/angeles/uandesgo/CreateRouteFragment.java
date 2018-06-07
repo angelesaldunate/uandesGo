@@ -99,9 +99,10 @@ public class CreateRouteFragment extends Fragment {
             @Override
             public void run() {
                 all = appDatabase.placeDao().getAllPlaces();
-                final User u = appDatabase.userDao().getOneUser("email");
-
-
+                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                String value1 = sharedPref.getString("email_dv",null);
+                final User u = appDatabase.userDao().getOneUser(value1);
+                
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override

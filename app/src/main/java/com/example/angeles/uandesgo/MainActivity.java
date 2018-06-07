@@ -125,8 +125,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_create) {
             fragment=new CreateRouteFragment();
-
             getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+
 
             // Handle the camera action
         } else if (id == R.id.nav_search) {
@@ -188,9 +188,14 @@ public class MainActivity extends AppCompatActivity
                     }
                 }) .start();
 
-
-
+                System.out.println ("ACAAAAAAAAAAAAAAAAAA22222222222");
+                System.out.println(email);
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("email_dv", email);
+                editor.commit();
+
                 //aca tengo el header para editarlo de aca
                 View headerView = (navigationView.getHeaderView(0));
                 TextView textViewmail = headerView.findViewById(R.id.emailView);
