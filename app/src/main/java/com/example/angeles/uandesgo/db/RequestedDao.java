@@ -13,22 +13,16 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 
 @Dao
-public interface RouteDao {
+public interface RequestedDao {
 
-    @Query("SELECT * FROM route")
-    List<Route> getAllRoutes();
-
-    @Query("SELECT * FROM route WHERE userId=:userId  ")
-    List<Route> getAllMYRoutes(int userId);
-
-    @Query("SELECT * FROM route WHERE userId!=:userId  ")
-    List<Route> getAllNotMineRoutes(int userId);
+    @Query("SELECT * FROM requestedroute")
+    List<User> getAllReqRoute();
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertAll(Route... routes);
+    void insertAll(RequestedRoute... requestedRoutes);
 
 
-    @Query("DELETE FROM route")
+    @Query("DELETE FROM requestedroute")
     void deleteAll();
 }

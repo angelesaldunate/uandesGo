@@ -107,8 +107,7 @@ public class MyRoutesFragment extends Fragment {
         final ListView lv = (ListView) view.findViewById(R.id.list_myRoutes);
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         final String value1 = sharedPref.getString("email_dv",null);
-        System.out.println("ACAAAAAAAAAAAAA");
-        System.out.println(value1);
+
 
 
         new Thread(new Runnable() {

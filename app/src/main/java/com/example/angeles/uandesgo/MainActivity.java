@@ -188,8 +188,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 }) .start();
 
-                System.out.println ("ACAAAAAAAAAAAAAAAAAA22222222222");
-                System.out.println(email);
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                 SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();

@@ -1,12 +1,22 @@
 package com.example.angeles.uandesgo;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.example.angeles.uandesgo.db.AppDatabase;
+import com.example.angeles.uandesgo.db.Route;
+import com.example.angeles.uandesgo.db.User;
+
+import java.util.List;
 
 
 /**
@@ -22,6 +32,9 @@ public class SearchRouteFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String DATABASE_NAME = "movies_db";
+
+    private List<Route> all;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,6 +71,34 @@ public class SearchRouteFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+
+        final AppDatabase appDatabase= Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
+        final ListView lv = (ListView) view.findViewById(R.id.list_allRoutes);
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        final String value1 = sharedPref.getString("email_dv",null);
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final User u = appDatabase.userDao().getOneUser(value1);
+
+                all = appDatabase.routeDao().getAllNotMineRoutes(u.getUid());
+                Handler mainHandler = new Handler(getActivity().getMainLooper());
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        final RoutesAdapter adapter = new RoutesAdapter(getContext(), all);
+                        lv.setAdapter(adapter);
+
+                    }
+                });
+
+            }
+        }) .start();
     }
 
     @Override
