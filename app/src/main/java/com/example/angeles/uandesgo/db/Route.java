@@ -68,7 +68,7 @@ public class Route {
         this.quantity = quantity;
     }
 
-    public boolean isStarting_point() {
+    public boolean getStarting_point() {
         return starting_point;
     }
 

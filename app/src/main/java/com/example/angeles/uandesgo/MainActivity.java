@@ -82,6 +82,9 @@ public class MainActivity extends AppCompatActivity
             //iniciaractividad solo si no existe anteriormente
             startActivityForResult(intent,SEND_MESSAGE);
         }
+
+        HomeFragment homeFragment = new HomeFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
     }
 
     @Override
@@ -129,6 +132,11 @@ public class MainActivity extends AppCompatActivity
 
 
             // Handle the camera action
+
+        } else if (id == R.id.nav_home) {
+            fragment=new HomeFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+
         } else if (id == R.id.nav_search) {
             fragment=new SearchRouteFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
@@ -183,7 +191,7 @@ public class MainActivity extends AppCompatActivity
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        appDatabase.userDao().insertAll(new User("None", email, password, "+56999999999"));
+                        appDatabase.userDao().insertAll(new User("Nicolas", email, password, "+56999999999"));
 
                     }
                 }) .start();

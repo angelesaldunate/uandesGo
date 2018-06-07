@@ -26,7 +26,7 @@
         android:id="@+id/linearLayout_direction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
             android:fontFamily="@font/capriola"
             android:text="@string/direcci_n"
             android:textAlignment="center"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,6 +48,7 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/textView_title_create_route"
             tools:layout_editor_absoluteX="52dp">
+
             <RadioGroup
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
@@ -58,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/capriola"
-                    android:text="@string/voy"
+                    android:text="Voy a la UAndes"
                     android:textSize="14sp" />
 
                 <RadioButton
@@ -67,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/capriola"
-                    android:text="@string/vuelvo"
+                    android:text="Salgo desde la UAndes"
                     android:textSize="14sp" />
 
             </RadioGroup>
@@ -80,7 +81,7 @@
         android:id="@+id/linearLayout_sector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="24dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -95,7 +96,7 @@
             android:fontFamily="@font/capriola"
             android:text="@string/sector"
             android:textAlignment="center"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/spinner_sectors"
@@ -135,12 +136,13 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="161dp"
-        android:layout_height="75dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintTop_toBottomOf="@+id/linearLayout_sector">
 
         <TextView
@@ -151,7 +153,7 @@
             android:textAlignment="center"
             android:fontFamily="@font/capriola"
             android:text="@string/capacity"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/editText_capacity"
@@ -159,7 +161,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="number" />
+            android:textSize="10sp"
+            android:inputType="number"
+            android:hint="@string/asientos_disponibles"/>
     </LinearLayout>
 
 

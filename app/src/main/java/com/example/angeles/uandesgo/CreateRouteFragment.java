@@ -11,14 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
 import com.example.angeles.uandesgo.db.Place;
 import com.example.angeles.uandesgo.db.Route;
 import com.example.angeles.uandesgo.db.User;
+
+import org.w3c.dom.Text;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -92,10 +96,6 @@ public class CreateRouteFragment extends Fragment {
 
 
 
-                final boolean checked2 = ((RadioButton) getView().findViewById(R.id.radioButton_leaving) ).isChecked();
-
-
-
 
                         lv.setAdapter(adapter);
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -109,19 +109,21 @@ public class CreateRouteFragment extends Fragment {
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
-
+                                        boolean checked2 = ((RadioButton) getView().findViewById(R.id.radioButton_going)).isChecked();
+                                        EditText quantity = (EditText) getView().findViewById(R.id.editText_capacity);
                                         final Place place = adapter.getItem(a);
                                         Route rt = new Route();
                                         rt.setDep_time(new Date().toString());
                                         rt.setPlaceId(place.getPid());
-                                        rt.setQuantity(3);
+                                        rt.setQuantity(Integer.valueOf(quantity.getText().toString()));
                                         rt.setUserId(u.getUid());
                                         rt.setStarting_point(checked2);
                                         appDatabase.routeDao().insertAll(rt);
                                     }
                                 }) .start();
                                 Toast.makeText(getContext(),"Ruta Creada",Toast.LENGTH_SHORT).show();
-
+                                HomeFragment homeFragment = new HomeFragment();
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
 
 
                             }
