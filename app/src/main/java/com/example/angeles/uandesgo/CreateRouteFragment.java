@@ -2,6 +2,7 @@ package com.example.angeles.uandesgo;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +17,11 @@ import android.widget.Toast;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
 import com.example.angeles.uandesgo.db.Place;
+import com.example.angeles.uandesgo.db.Route;
+import com.example.angeles.uandesgo.db.User;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -85,21 +90,18 @@ public class CreateRouteFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
-        String[] places = new String[] {
-                "Escuela Militar","Los Dominicos"
 
-        };
-//        PlaceViewModel mplaceViewModel = ViewModelProviders.of(this).get(PlaceViewModel.class);
-//        LiveData<List<Place>> lp = mplaceViewModel.getmAllPlaces();
-//        PlaceAdapter adapter = new PlaceAdapter(getContext(),lp.getValue());
-        final AppDatabase formDatabase=Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
+        final AppDatabase appDatabase=Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
         final ListView lv = (ListView) view.findViewById(R.id.list_destinations);
 
-//        lv.setAdapter(adapter);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                all = formDatabase.placeDao().getAllPlaces();
+                all = appDatabase.placeDao().getAllPlaces();
+                final User u = appDatabase.userDao().getOneUser("email");
+
+
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override
@@ -107,11 +109,38 @@ public class CreateRouteFragment extends Fragment {
                         final PlaceAdapter adapter = new PlaceAdapter(getContext(), all);
 
 
+
+                final boolean checked2 = ((RadioButton) getView().findViewById(R.id.radioButton_leaving) ).isChecked();
+
+
+
+
                         lv.setAdapter(adapter);
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Toast.makeText(getContext(),adapter.getItem(i).getName(),Toast.LENGTH_SHORT).show();
+                                final int a = i;
+                                final AppDatabase appDatabase = Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
+
+
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        final Place place = adapter.getItem(a);
+                                        Route rt = new Route();
+                                        rt.setDep_time(new Date().toString());
+                                        rt.setPlaceId(place.getPid());
+                                        rt.setQuantity(3);
+                                        rt.setUserId(u.getUid());
+                                        rt.setStarting_point(checked2);
+                                        appDatabase.routeDao().insertAll(rt);
+                                    }
+                                }) .start();
+                                Toast.makeText(getContext(),"Ruta Creada",Toast.LENGTH_SHORT).show();
+
+
 
                             }
                         });
@@ -120,33 +149,6 @@ public class CreateRouteFragment extends Fragment {
 
             }
         }) .start();
-
-//
-//        final List<String> place_list = new ArrayList<String>(Arrays.asList(places));
-//
-//        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity() , android.R.layout.simple_list_item_1,place_list);
-//
-//        lv.setAdapter(arrayAdapter);
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                boolean checked1 = ((RadioButton) getView().findViewById(R.id.radioButton_going) ).isChecked();
-//                boolean checked2 = ((RadioButton) getView().findViewById(R.id.radioButton_leaving) ).isChecked();
-//
-//                String destin = "";
-//                if (checked1)
-//                    destin = "Going";
-//                if (checked2)
-//                    destin = "Leaving";
-//
-//
-//              //  Toast.makeText(getContext(),arrayAdapter.getItem(i),Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getContext(),destin,Toast.LENGTH_SHORT).show();
-//
-//
-//            }
-//        });
-
 
     }
 

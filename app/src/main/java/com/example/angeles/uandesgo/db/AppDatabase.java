@@ -11,10 +11,11 @@ import android.content.Context;
  */
 
 
-@Database(entities = {User.class, Place.class}, version = 1)
+@Database(entities = {User.class, Place.class, Route.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract PlaceDao placeDao();
+    public abstract RouteDao routeDao();
 
     private static AppDatabase INSTANCE;
 

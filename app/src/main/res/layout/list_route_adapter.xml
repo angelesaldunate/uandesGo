@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
+
     <TextView
-        android:id="@+id/textViewide"
+        android:id="@+id/textViewdestino"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -15,16 +16,14 @@
         android:layout_marginRight="8dp"/>
 
     <TextView
-        android:id="@+id/textViewnombre"
+        android:id="@+id/textViewhora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:text="TextView"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="8dp"/>
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
 
     <TextView
-        android:id="@+id/textViewzona"
+        android:id="@+id/textViewcapacidad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"

@@ -8,36 +8,36 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.angeles.uandesgo.db.Place;
+import com.example.angeles.uandesgo.db.Route;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Angeles on 4/3/2018.
  */
 
-public class PlaceAdapter extends ArrayAdapter<Place> {
-    public PlaceAdapter(Context context, List<Place> forms) {
+public class RoutesAdapter extends ArrayAdapter<Route> {
+    public RoutesAdapter(Context context, List<Route> forms) {
         super(context, 0, forms);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        Place place = getItem(position);
+        Route place = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_place_adapter, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_route_adapter, parent, false);
         }
         // Lookup view for data population
-        TextView fride = (TextView) convertView.findViewById(R.id.textViewide);
+        TextView frdes = (TextView) convertView.findViewById(R.id.textViewdestino);
+        TextView frhour = (TextView) convertView.findViewById(R.id.textViewhora);
+        TextView frquantity = (TextView) convertView.findViewById(R.id.textViewcapacidad);
 
-        TextView frName = (TextView) convertView.findViewById(R.id.textViewnombre);
-        TextView frZOne = (TextView) convertView.findViewById(R.id.textViewzona);
         // Populate the data into the template view using the data object
-        fride.setText(String.valueOf(place.getPid()));
-        frName.setText(place.getName());
-        frZOne.setText(place.getZone());
+        frdes.setText(String.valueOf(place.getPlaceId()));
+        frhour.setText(place.getDep_time().toString());
+        frquantity.setText(String.valueOf(place.getQuantity()));
 
         // Return the completed view to render on screen
         return convertView;

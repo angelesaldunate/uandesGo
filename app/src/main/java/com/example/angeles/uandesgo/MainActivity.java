@@ -1,8 +1,11 @@
 package com.example.angeles.uandesgo;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
 import com.example.angeles.uandesgo.db.Place;
+import com.example.angeles.uandesgo.db.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,30 +52,36 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //aca tengo el header para editarlo de aca
-        View headerView = (navigationView.getHeaderView(0));
-        TextView email = headerView.findViewById(R.id.emailView);
 
 
-        final AppDatabase formDatabase=Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
+        final AppDatabase appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
 
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<Place> instplace = new ArrayList<>();
-                formDatabase.placeDao ().insertAll(new Place("Escuela Militar", "Oriente"));
+                if (appDatabase.userDao().getAllUser().size()==0){
+
+                    appDatabase.placeDao ().insertAll(new Place("Escuela Militar", "Oriente"));
+                    appDatabase.placeDao ().insertAll(new Place("Los Dominicos", "Oriente"));
+                    appDatabase.userDao().insertAll(new User("Pablo","email","passsssss","+56999999999"));
+
+
+                }
+
+
+
             }
         }) .start();
 
-        /*
+
         CredentialManage nueva = new CredentialManage();
         if (!nueva.verificarCredenciales(this)) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra(EXTRA_MESSAGE,"Sent!");
             //iniciaractividad solo si no existe anteriormente
             startActivityForResult(intent,SEND_MESSAGE);
-        }*/
+        }
     }
 
     @Override
@@ -164,8 +174,21 @@ public class MainActivity extends AppCompatActivity
 
             if (resultCode == RESULT_OK) {
 
-                String email = data.getStringExtra("email_devuelto");
-                String password = data.getStringExtra("password_devuelto");
+                final String email = data.getStringExtra("email_devuelto");
+                final String password = data.getStringExtra("password_devuelto");
+
+                final AppDatabase appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
+
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        appDatabase.userDao().insertAll(new User("None", email, password, "+56999999999"));
+
+                    }
+                }) .start();
+
+
 
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                 //aca tengo el header para editarlo de aca
@@ -173,12 +196,10 @@ public class MainActivity extends AppCompatActivity
                 TextView textViewmail = headerView.findViewById(R.id.emailView);
 
                 textViewmail.setText(email);
-                //TextView textViewpass = findViewById(R.id.textViewPassword);
-                //textViewpass.setText(password);
+
 
                 CredentialManage nueva = new CredentialManage();
                 nueva.guardarCredenciales(this,email,password);
-
 
 
             }

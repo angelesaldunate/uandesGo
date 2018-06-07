@@ -1,12 +1,26 @@
 package com.example.angeles.uandesgo;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.Toast;
+
+import com.example.angeles.uandesgo.db.AppDatabase;
+import com.example.angeles.uandesgo.db.Place;
+import com.example.angeles.uandesgo.db.Route;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -22,6 +36,10 @@ public class MyRoutesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String DATABASE_NAME = "movies_db";
+
+    private List<Route> all;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -80,6 +98,30 @@ public class MyRoutesFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         }
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+
+        final AppDatabase appDatabase= Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
+        final ListView lv = (ListView) view.findViewById(R.id.list_myRoutes);
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                all = appDatabase.routeDao().getAllRoutes();
+                Handler mainHandler = new Handler(getActivity().getMainLooper());
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        final RoutesAdapter adapter = new RoutesAdapter(getContext(), all);
+                        lv.setAdapter(adapter);
+
+                    }
+                });
+
+            }
+        }) .start();
     }
 
     @Override

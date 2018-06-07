@@ -33,7 +33,7 @@ public class Place {
         return pid;
     }
 
-    public void setPid(int uid) {
+    public void setPid(int pid) {
         this.pid = pid;
     }
 

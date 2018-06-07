@@ -5,6 +5,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Console;
+
 /**
  * Created by Angeles on 5/30/2018.
  */
@@ -25,10 +27,16 @@ public class User {
     @ColumnInfo(name = "password")
     private String password;
 
-    public User( String name, String email, String password) {
+    private String tel_number;
+
+
+
+    public User(String name, String email, String password, String tel_number) {
         this.name = name;
         this.email = email;
         this.password=password;
+        this.tel_number = tel_number;
+
     }
 
     public int getUid() {
@@ -60,5 +68,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getTel_number() {
+        return tel_number;
+    }
+
+    public void setTel_number(String tel_number) {
+        this.tel_number = tel_number;
     }
 }

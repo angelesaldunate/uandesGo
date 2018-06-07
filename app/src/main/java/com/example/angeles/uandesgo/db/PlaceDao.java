@@ -19,6 +19,9 @@ public interface PlaceDao {
     @Query("SELECT * FROM place")
     List<Place> getAllPlaces();
 
+    @Query("SELECT * FROM place WHERE name=:name LIMIT 1")
+    Place getOnePlace(String name);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(Place... place);
 
