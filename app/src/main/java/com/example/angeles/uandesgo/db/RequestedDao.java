@@ -16,7 +16,10 @@ import java.util.List;
 public interface RequestedDao {
 
     @Query("SELECT * FROM requestedroute")
-    List<User> getAllReqRoute();
+    List<RequestedRoute> getAllReqRoute();
+
+    @Query("SELECT routeId FROM requestedroute WHERE userId=:userId")
+    List<Integer> getAllIdRoute(int userId);
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

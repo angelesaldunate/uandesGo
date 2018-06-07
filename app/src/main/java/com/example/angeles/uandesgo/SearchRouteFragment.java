@@ -10,12 +10,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
+import com.example.angeles.uandesgo.db.Place;
+import com.example.angeles.uandesgo.db.RequestedRoute;
 import com.example.angeles.uandesgo.db.Route;
 import com.example.angeles.uandesgo.db.User;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -93,6 +98,31 @@ public class SearchRouteFragment extends Fragment {
                     public void run() {
                         final RoutesAdapter adapter = new RoutesAdapter(getContext(), all);
                         lv.setAdapter(adapter);
+                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                final int a = i;
+                                final AppDatabase appDatabase = Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
+
+
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        final Route route = adapter.getItem(a);
+                                        RequestedRoute rr= new RequestedRoute();
+                                        rr.setRouteId(route.getRid());
+                                        rr.setUserId(u.getUid());
+                                        appDatabase.requestedDao().insertAll(rr);
+                                    }
+                                }) .start();
+                                Toast.makeText(getContext(),"Ruta Pedida",Toast.LENGTH_SHORT).show();
+
+
+
+                            }
+                        });
 
                     }
                 });

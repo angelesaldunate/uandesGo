@@ -24,6 +24,8 @@ public interface RouteDao {
     @Query("SELECT * FROM route WHERE userId!=:userId  ")
     List<Route> getAllNotMineRoutes(int userId);
 
+    @Query("SELECT * FROM route WHERE rid!=:routeId  ")
+    Route getRoutebyId(int routeId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(Route... routes);
