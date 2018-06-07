@@ -39,6 +39,8 @@
     <string name="voy">Voy</string>
     <string name="direcci_n">Dirección</string>
     <string name="pide_un_avent_n">Pide un aventón</string>
+    <string name="a_donde_vas">¿A donde vas?</string>
+    <string name="capacity">Capacidad</string>
     <string-array name="Sectors">
         <item>@string/Nororiente</item>
     </string-array>
