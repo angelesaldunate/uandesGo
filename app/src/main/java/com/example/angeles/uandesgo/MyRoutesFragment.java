@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.angeles.uandesgo.db.AppDatabase;
 import com.example.angeles.uandesgo.db.Place;
 import com.example.angeles.uandesgo.db.Route;
+import com.example.angeles.uandesgo.db.User;
 
 import java.util.Date;
 import java.util.List;
@@ -104,12 +105,18 @@ public class MyRoutesFragment extends Fragment {
 
         final AppDatabase appDatabase= Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
         final ListView lv = (ListView) view.findViewById(R.id.list_myRoutes);
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        final String value1 = sharedPref.getString("email_dv",null);
+        System.out.println("ACAAAAAAAAAAAAA");
+        System.out.println(value1);
 
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                all = appDatabase.routeDao().getAllRoutes();
+                final User u = appDatabase.userDao().getOneUser(value1);
+
+                all = appDatabase.routeDao().getAllMYRoutes(u.getUid());
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override

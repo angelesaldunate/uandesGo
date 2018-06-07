@@ -17,7 +17,7 @@ public class CredentialManage {
         editor.commit();
     }
     public boolean verificarCredenciales(Activity act){
-        SharedPreferences preferences = act.getSharedPreferences("text", 0);
+        SharedPreferences preferences = act.getPreferences(Context.MODE_PRIVATE);
         String value1 = preferences.getString("email_devuelto",null);
         String value2 = preferences.getString("password_devuelto",null);
         if (value1 == null && value2==null) {

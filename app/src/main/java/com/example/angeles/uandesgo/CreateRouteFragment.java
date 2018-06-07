@@ -30,7 +30,6 @@ import java.util.List;
  * Activities that contain this fragment must implement the
  * {@link CreateRouteFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CreateRouteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class CreateRouteFragment extends Fragment {
@@ -52,25 +51,7 @@ public class CreateRouteFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreateRouteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CreateRouteFragment newInstance(String param1, String param2) {
-        CreateRouteFragment fragment = new CreateRouteFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -102,7 +83,7 @@ public class CreateRouteFragment extends Fragment {
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 String value1 = sharedPref.getString("email_dv",null);
                 final User u = appDatabase.userDao().getOneUser(value1);
-                
+
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override

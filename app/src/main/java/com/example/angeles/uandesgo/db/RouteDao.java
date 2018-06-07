@@ -18,6 +18,10 @@ public interface RouteDao {
     @Query("SELECT * FROM route")
     List<Route> getAllRoutes();
 
+    @Query("SELECT * FROM route WHERE userId=:userId  ")
+    List<Route> getAllMYRoutes(int userId);
+
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(Route... routes);
 
