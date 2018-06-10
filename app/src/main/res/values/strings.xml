@@ -42,6 +42,7 @@
     <string name="a_donde_vas">¿A donde vas?</string>
     <string name="capacity">Capacidad</string>
     <string name="asientos_disponibles">Asientos Disponibles</string>
+    <string name="number">+56999999999</string>
     <string-array name="Sectors">
         <item>@string/Nororiente</item>
     </string-array>

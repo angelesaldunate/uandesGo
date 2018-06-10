@@ -103,19 +103,23 @@ public class CreateRouteFragment extends Fragment {
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 final int a = i;
                                 final AppDatabase appDatabase = Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
-
-
-
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
                                         boolean checked2 = ((RadioButton) getView().findViewById(R.id.radioButton_going)).isChecked();
                                         EditText quantity = (EditText) getView().findViewById(R.id.editText_capacity);
+                                        int qty =0;
+
+                                        if (quantity.getText().toString()!= ""){
+                                             qty = Integer.valueOf(quantity.getText().toString());
+
+                                        }
                                         final Place place = adapter.getItem(a);
                                         Route rt = new Route();
                                         rt.setDep_time(new Date().toString());
                                         rt.setPlaceId(place.getPid());
-                                        rt.setQuantity(Integer.valueOf(quantity.getText().toString()));
+
+                                        rt.setQuantity(qty);
                                         rt.setUserId(u.getUid());
                                         rt.setStarting_point(checked2);
                                         appDatabase.routeDao().insertAll(rt);

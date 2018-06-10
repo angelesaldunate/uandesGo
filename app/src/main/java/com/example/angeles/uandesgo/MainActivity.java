@@ -6,6 +6,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity
 
         HomeFragment homeFragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorGreen)));
     }
 
     @Override
@@ -191,7 +193,7 @@ public class MainActivity extends AppCompatActivity
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        appDatabase.userDao().insertAll(new User("Nicolas", email, password, "+56999999999"));
+                        appDatabase.userDao().insertAll(new User("Angeles", email, password, "+56999999999"));
 
                     }
                 }) .start();
@@ -205,8 +207,14 @@ public class MainActivity extends AppCompatActivity
                 //aca tengo el header para editarlo de aca
                 View headerView = (navigationView.getHeaderView(0));
                 TextView textViewmail = headerView.findViewById(R.id.emailView);
+                TextView textviewnombre = headerView.findViewById(R.id.Textviewnavnombre);
 
                 textViewmail.setText(email);
+                textviewnombre.setText("Angeles");
+
+
+                HomeFragment homeFragment = new HomeFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
 
 
                 CredentialManage nueva = new CredentialManage();
