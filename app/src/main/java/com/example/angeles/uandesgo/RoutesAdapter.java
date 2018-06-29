@@ -25,7 +25,7 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
     public RoutesAdapter(Context context, List<Route> forms) {
         super(context, 0, forms);
     }
-    private static final String DATABASE_NAME = "movies_db";
+    private static final String DATABASE_NAME = "uandesGo_db";
 
 
     @Override
