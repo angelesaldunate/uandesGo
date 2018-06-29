@@ -41,9 +41,6 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
 
         // Lookup view for data population
         final TextView textView = (TextView) convertView.findViewById(R.id.titleTextView);
-        //final TextView fruser = (TextView) convertView.findViewById(R.id.textView_usuario_sentido);
-        //TextView frhour = (TextView) convertView.findViewById(R.id.textViewhora);
-        //TextView frquantity = (TextView) convertView.findViewById(R.id.textViewgl);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -71,8 +68,7 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
 
             }}).start();
 
-        // Populate the data into the template view using the data object
-        //frhour.setText(place.getDep_time());
+
         boolean goinlv = place.getStarting_point();
         String gl = "Voy a La Universidad";
 

@@ -30,7 +30,7 @@ import java.util.List;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, iComunicator {
     static final int SEND_MESSAGE = 1;
     private static final String DATABASE_NAME = "uandesGo_db";
     static private AppDatabase appDatabase;
@@ -166,27 +166,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (resultCode == RESULT_OK) {
                 final String email = data.getStringExtra("email_devuelto");
                 final String password = data.getStringExtra("password_devuelto");
-                final AppDatabase appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
-
-
                 credentialManager.guardarCredenciales(email,password);
-                //aca tengo el header para editarlo de aca
                 setCredentialsOnHeader(email);
-
-
-
-
-                credentialManager.guardarCredenciales(email,password);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         appDatabase.userDao().insertAll(new User( email, password));
                         int ide = appDatabase.userDao().getOneUser(email).getUid();
-                    Profile pro = new Profile();
-                    pro.setUserId(ide);
-                    pro.setName("Angeles");
-                    pro.setPhone("+78329811");
-                    appDatabase.profileDao().insertAll(pro);
+                        Profile pro = new Profile();
+                        pro.setUserId(ide);
+                        pro.setName("Angeles");
+                        pro.setPhone("+78329811");
+                        appDatabase.profileDao().insertAll(pro);
                     }
                 }) .start();
 
@@ -206,4 +197,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
     }
 
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
+
+    @Override
+    public CredentialManage getCredentialManage() {
+        return credentialManager;
+    }
+
+    @Override
+    public AppDatabase getDb() {
+        return appDatabase;
+    }
 }

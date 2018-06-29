@@ -84,16 +84,11 @@ public class CreateRouteFragment extends Fragment {
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 String value1 = sharedPref.getString("email_guardado",null);
                 final User u = appDatabase.userDao().getOneUser(value1);
-
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         final PlaceAdapter adapter = new PlaceAdapter(getContext(), all);
-
-
-
-
                         lv.setAdapter(adapter);
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -106,9 +101,7 @@ public class CreateRouteFragment extends Fragment {
                                     public void run() {
                                         boolean checked2 = ((RadioButton) getView().findViewById(R.id.radioButton_going)).isChecked();
                                         final EditText quantity = (EditText) getView().findViewById(R.id.editText_capacity);
-
                                         String qty = quantity.getText().toString();
-
                                         if (TextUtils.isEmpty(qty)) {
                                             Handler mainHandler = new Handler(getActivity().getMainLooper());
                                             mainHandler.post(new Runnable() {
@@ -116,11 +109,9 @@ public class CreateRouteFragment extends Fragment {
                                                 public void run() {
                                                     quantity.setError(getString(R.string.error_field_required));
                                                     quantity.requestFocus();
-
                                                 }
                                             });
                                         }
-
                                         else{
                                             final Place place = adapter.getItem(a);
                                             Route rt = new Route();
