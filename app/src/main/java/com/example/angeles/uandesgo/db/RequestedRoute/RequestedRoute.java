@@ -1,10 +1,12 @@
-package com.example.angeles.uandesgo.db;
+package com.example.angeles.uandesgo.db.RequestedRoute;
 
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+
+import com.example.angeles.uandesgo.db.Route.Route;
+import com.example.angeles.uandesgo.db.User.User;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 

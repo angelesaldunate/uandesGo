@@ -10,17 +10,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
-import com.example.angeles.uandesgo.db.Place;
-import com.example.angeles.uandesgo.db.Route;
-import com.example.angeles.uandesgo.db.User;
+import com.example.angeles.uandesgo.db.Route.Route;
+import com.example.angeles.uandesgo.db.User.User;
 
-import java.util.Date;
 import java.util.List;
 
 

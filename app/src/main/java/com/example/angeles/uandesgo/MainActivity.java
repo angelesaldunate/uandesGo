@@ -1,14 +1,14 @@
 package com.example.angeles.uandesgo;
 
-import android.app.Activity;
-import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.LightingColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,10 +22,10 @@ import android.widget.TextView;
 
 
 import com.example.angeles.uandesgo.db.AppDatabase;
-import com.example.angeles.uandesgo.db.Place;
-import com.example.angeles.uandesgo.db.User;
+import com.example.angeles.uandesgo.db.Place.Place;
+import com.example.angeles.uandesgo.db.User.Profile.Profile;
+import com.example.angeles.uandesgo.db.User.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity
 
                     appDatabase.placeDao ().insertAll(new Place("Escuela Militar", "Oriente"));
                     appDatabase.placeDao ().insertAll(new Place("Los Dominicos", "Oriente"));
-                    appDatabase.userDao().insertAll(new User("Pablo","email","passsssss","+56999999999"));
 
 
                 }
@@ -186,43 +185,50 @@ public class MainActivity extends AppCompatActivity
 
                 final String email = data.getStringExtra("email_devuelto");
                 final String password = data.getStringExtra("password_devuelto");
-
-                final AppDatabase appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
-
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        appDatabase.userDao().insertAll(new User("Angeles", email, password, "+56999999999"));
-
-                    }
-                }) .start();
-
-                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("email_dv", email);
-                editor.commit();
-
-                //aca tengo el header para editarlo de aca
-                View headerView = (navigationView.getHeaderView(0));
-                TextView textViewmail = headerView.findViewById(R.id.emailView);
-                TextView textviewnombre = headerView.findViewById(R.id.Textviewnavnombre);
-
-                textViewmail.setText(email);
-                textviewnombre.setText("Angeles");
+                final String done = data.getStringExtra("profile");
+                    final AppDatabase appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
 
 
-                HomeFragment homeFragment = new HomeFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
 
 
-                CredentialManage nueva = new CredentialManage();
-                nueva.guardarCredenciales(this,email,password);
+
+                    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                    SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("email_dv", email);
+                    editor.commit();
+
+                    //aca tengo el header para editarlo de aca
+                    View headerView = (navigationView.getHeaderView(0));
+                    TextView textViewmail = headerView.findViewById(R.id.emailView);
+                    TextView textviewnombre = headerView.findViewById(R.id.Textviewnavnombre);
+
+                    textViewmail.setText(email);
+                    textviewnombre.setText("Angeles");
 
 
+                    HomeFragment homeFragment = new HomeFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
+
+
+                    CredentialManage nueva = new CredentialManage();
+                    nueva.guardarCredenciales(this,email,password);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            appDatabase.userDao().insertAll(new User( email, password));
+                            int ide = appDatabase.userDao().getOneUser(email).getUid();
+                        Profile pro = new Profile();
+                        pro.setUserId(ide);
+                        pro.setName("Angeles");
+                        pro.setPhone("+78329811");
+                        appDatabase.profileDao().insertAll(pro);
+                        }
+                    }) .start();
+                }
             }
+
         }
     }
 
-}
+

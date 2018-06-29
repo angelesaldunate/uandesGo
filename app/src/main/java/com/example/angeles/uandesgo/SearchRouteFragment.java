@@ -15,12 +15,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
-import com.example.angeles.uandesgo.db.Place;
-import com.example.angeles.uandesgo.db.RequestedRoute;
-import com.example.angeles.uandesgo.db.Route;
-import com.example.angeles.uandesgo.db.User;
+import com.example.angeles.uandesgo.db.RequestedRoute.RequestedRoute;
+import com.example.angeles.uandesgo.db.Route.Route;
+import com.example.angeles.uandesgo.db.User.User;
 
-import java.util.Date;
 import java.util.List;
 
 

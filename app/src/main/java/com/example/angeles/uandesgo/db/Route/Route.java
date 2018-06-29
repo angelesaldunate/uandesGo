@@ -1,4 +1,4 @@
-package com.example.angeles.uandesgo.db;
+package com.example.angeles.uandesgo.db.Route;
 
 
 import android.arch.persistence.room.ColumnInfo;
@@ -6,8 +6,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.sql.Time;
-import java.util.Date;
+import com.example.angeles.uandesgo.db.Place.Place;
+import com.example.angeles.uandesgo.db.User.User;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 

@@ -7,9 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.angeles.uandesgo.db.Place;
+import com.example.angeles.uandesgo.db.Place.Place;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

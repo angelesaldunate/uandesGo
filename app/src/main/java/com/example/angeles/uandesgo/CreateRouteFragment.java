@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +15,13 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
-import com.example.angeles.uandesgo.db.Place;
-import com.example.angeles.uandesgo.db.Route;
-import com.example.angeles.uandesgo.db.User;
+import com.example.angeles.uandesgo.db.Place.Place;
+import com.example.angeles.uandesgo.db.Route.Route;
+import com.example.angeles.uandesgo.db.User.User;
 
-import org.w3c.dom.Text;
-
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -102,32 +99,56 @@ public class CreateRouteFragment extends Fragment {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 final int a = i;
+                                final int state = 0;
                                 final AppDatabase appDatabase = Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
                                         boolean checked2 = ((RadioButton) getView().findViewById(R.id.radioButton_going)).isChecked();
-                                        EditText quantity = (EditText) getView().findViewById(R.id.editText_capacity);
-                                        int qty =0;
+                                        final EditText quantity = (EditText) getView().findViewById(R.id.editText_capacity);
 
-                                        if (quantity.getText().toString()!= ""){
-                                             qty = Integer.valueOf(quantity.getText().toString());
+                                        String qty = quantity.getText().toString();
+
+                                        if (TextUtils.isEmpty(qty)) {
+                                            Handler mainHandler = new Handler(getActivity().getMainLooper());
+                                            mainHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    quantity.setError(getString(R.string.error_field_required));
+                                                    quantity.requestFocus();
+
+                                                }
+                                            });
+                                        }
+
+                                        else{
+                                            final Place place = adapter.getItem(a);
+                                            Route rt = new Route();
+                                            rt.setDep_time(new Date().toString());
+                                            rt.setPlaceId(place.getPid());
+
+                                            rt.setQuantity(Integer.valueOf(qty));
+                                            rt.setUserId(u.getUid());
+                                            rt.setStarting_point(checked2);
+                                            appDatabase.routeDao().insertAll(rt);
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                public void run() {
+                                                    Toast.makeText(getContext(),"Ruta Creada",Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+
+                                            MyRoutesFragment homeFragment = new MyRoutesFragment();
+                                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
+
 
                                         }
-                                        final Place place = adapter.getItem(a);
-                                        Route rt = new Route();
-                                        rt.setDep_time(new Date().toString());
-                                        rt.setPlaceId(place.getPid());
 
-                                        rt.setQuantity(qty);
-                                        rt.setUserId(u.getUid());
-                                        rt.setStarting_point(checked2);
-                                        appDatabase.routeDao().insertAll(rt);
                                     }
                                 }) .start();
-                                Toast.makeText(getContext(),"Ruta Creada",Toast.LENGTH_SHORT).show();
-                                HomeFragment homeFragment = new HomeFragment();
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
+
+
+
 
 
                             }

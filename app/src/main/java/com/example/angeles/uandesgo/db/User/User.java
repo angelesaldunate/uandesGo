@@ -1,4 +1,4 @@
-package com.example.angeles.uandesgo.db;
+package com.example.angeles.uandesgo.db.User;
 
 
 import android.arch.persistence.room.ColumnInfo;
@@ -18,24 +18,18 @@ public class User {
     @PrimaryKey (autoGenerate = true)
     private int uid;
 
-    @ColumnInfo(name = "name")
-    private String name;
-
     @ColumnInfo(name = "email")
     private String email;
 
     @ColumnInfo(name = "password")
     private String password;
 
-    private String tel_number;
 
 
 
-    public User(String name, String email, String password, String tel_number) {
-        this.name = name;
+    public User( String email, String password) {
         this.email = email;
         this.password=password;
-        this.tel_number = tel_number;
 
     }
 
@@ -47,13 +41,6 @@ public class User {
         this.uid = uid;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getEmail() {
         return email;
@@ -70,11 +57,4 @@ public class User {
         this.password = password;
     }
 
-    public String getTel_number() {
-        return tel_number;
-    }
-
-    public void setTel_number(String tel_number) {
-        this.tel_number = tel_number;
-    }
 }

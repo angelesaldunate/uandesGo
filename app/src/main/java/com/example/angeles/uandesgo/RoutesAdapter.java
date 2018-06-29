@@ -10,11 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
-import com.example.angeles.uandesgo.db.Place;
-import com.example.angeles.uandesgo.db.Route;
-import com.example.angeles.uandesgo.db.User;
+import com.example.angeles.uandesgo.db.Place.Place;
+import com.example.angeles.uandesgo.db.Route.Route;
+import com.example.angeles.uandesgo.db.User.Profile.Profile;
+import com.example.angeles.uandesgo.db.User.User;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,13 +49,14 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
             public void run() {
                 final Place fp = appDatabase.placeDao().getPlacebyId(place.getPlaceId());
                 final User up = appDatabase.userDao().getUserById(place.getUserId());
+                final Profile pr = appDatabase.profileDao().getOneProfile(place.getUserId());
 
                 Handler mainHandler = new Handler(getContext().getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         frdes.setText(fp.getName());
-                        fruser.setText(up.getName());
+                        fruser.setText(pr.getName());
 
                     }
                 });

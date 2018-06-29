@@ -1,11 +1,10 @@
-package com.example.angeles.uandesgo.db;
+package com.example.angeles.uandesgo.db.Place;
 
 /**
  * Created by Angeles on 5/30/2018.
  */
 
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;

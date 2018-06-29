@@ -26,11 +26,11 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"/>
+            android:label="@string/title_activity_login" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCfGdxbwJHPsrnYnC-hYYtY59BuyEgB-nc"/>
+            android:value="AIzaSyCfGdxbwJHPsrnYnC-hYYtY59BuyEgB-nc" />
 
     </application>
 

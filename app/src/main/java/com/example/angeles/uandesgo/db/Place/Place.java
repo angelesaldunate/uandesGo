@@ -1,4 +1,4 @@
-package com.example.angeles.uandesgo.db;
+package com.example.angeles.uandesgo.db.Place;
 
 
 import android.arch.persistence.room.ColumnInfo;
