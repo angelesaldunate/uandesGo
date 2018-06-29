@@ -9,28 +9,28 @@ import android.content.SharedPreferences;
  */
 
 public class CredentialManage {
-    public void guardarCredenciales(Activity act, String email, String password ){
-        SharedPreferences sharedPref = act.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+    private SharedPreferences preferences;
+
+    public CredentialManage(Activity activity) {
+        preferences = activity.getPreferences(Context.MODE_PRIVATE);
+    }
+
+    public void guardarCredenciales(String email, String password) {
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putString("email_guardado", email);
         editor.putString("password_guardada", password);
-        editor.commit();
+        editor.apply();
     }
-    public boolean verificarCredenciales(Activity act){
-        SharedPreferences preferences = act.getPreferences(Context.MODE_PRIVATE);
-        String value1 = preferences.getString("email_devuelto",null);
-        String value2 = preferences.getString("password_devuelto",null);
-        if (value1 == null && value2==null) {
-            return false;
-        }
-        return true;
+    public boolean verificarCredenciales() {
+        String value1 = preferences.getString("email_guardado",null);
+        String value2 = preferences.getString("password_guardada",null);
+        return value1 != null || value2 != null;
     }
-    public void borrarCredenciales(Activity act ){
-        SharedPreferences sharedPref = act.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+    public void borrarCredenciales() {
+        SharedPreferences.Editor editor = preferences.edit();
         editor.remove("email_guardado");
         editor.remove("password_guardada");
-        editor.commit();
+        editor.apply();
     }
 
 }

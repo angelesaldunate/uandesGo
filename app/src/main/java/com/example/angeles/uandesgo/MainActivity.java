@@ -27,66 +27,53 @@ import com.example.angeles.uandesgo.db.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, iComunicator {
     static final int SEND_MESSAGE = 1;
-    private static final String DATABASE_NAME = "movies_db";
-
+    private static final String DATABASE_NAME = "uandesGo_db";
+    static private AppDatabase appDatabase;
+    static private SharedPreferences sharedPref;
+    private CredentialManage credentialManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ////////////////// Drawer Stuff
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorGreen)));
+        ////////////////////////////////////
 
-
-        final AppDatabase appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
-
-
+        appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (appDatabase.userDao().getAllUser().size()==0){
-
-                    appDatabase.placeDao ().insertAll(new Place("Escuela Militar", "Oriente"));
-                    appDatabase.placeDao ().insertAll(new Place("Los Dominicos", "Oriente"));
+                if (appDatabase.placeDao().getAllPlaces().size()==0){
+                    appDatabase.placeDao().insertAll(new Place("Escuela Militar", "Oriente"));
+                    appDatabase.placeDao().insertAll(new Place("Los Dominicos", "Oriente"));
                     appDatabase.userDao().insertAll(new User("Pablo","email","passsssss","+56999999999"));
-
-
                 }
-
-
-
             }
-        }) .start();
+        }).start();
 
-
-        CredentialManage nueva = new CredentialManage();
-        if (!nueva.verificarCredenciales(this)) {
+        credentialManager = new CredentialManage(this);
+        if (!credentialManager.verificarCredenciales()) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra(EXTRA_MESSAGE,"Sent!");
-            //iniciaractividad solo si no existe anteriormente
             startActivityForResult(intent,SEND_MESSAGE);
         }
-
-        HomeFragment homeFragment = new HomeFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorGreen)));
     }
 
     @Override
@@ -130,33 +117,30 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_create) {
             fragment=new CreateRouteFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
-
-
-            // Handle the camera action
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commitAllowingStateLoss();
 
         } else if (id == R.id.nav_home) {
             fragment=new HomeFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commitAllowingStateLoss();
 
         } else if (id == R.id.nav_search) {
             fragment=new SearchRouteFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commitAllowingStateLoss();
 
 
         } else if (id == R.id.nav_myroutes) {
             fragment=new MyRoutesFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commitAllowingStateLoss();
 
 
         } else if (id == R.id.nav_request) {
             fragment=new RequestedRoutesFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commitAllowingStateLoss();
 
 
         } else if (id == R.id.nav_profile) {
             fragment=new ProfileFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commitAllowingStateLoss();
 
 
         } else if (id == R.id.nav_logout) {
@@ -169,8 +153,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void logOut() {
-        CredentialManage nueva = new CredentialManage();
-        nueva.borrarCredenciales(this);
+        credentialManager.borrarCredenciales();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(EXTRA_MESSAGE,"Sent!");
         //iniciaractividad solo si no existe anteriormente
@@ -179,50 +162,49 @@ public class MainActivity extends AppCompatActivity
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == SEND_MESSAGE) {
-
             if (resultCode == RESULT_OK) {
-
                 final String email = data.getStringExtra("email_devuelto");
                 final String password = data.getStringExtra("password_devuelto");
-
-                final AppDatabase appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
-
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         appDatabase.userDao().insertAll(new User("Angeles", email, password, "+56999999999"));
-
                     }
-                }) .start();
+                }).start();
 
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("email_dv", email);
-                editor.commit();
+                editor.apply();
 
-                //aca tengo el header para editarlo de aca
+                //Update credentials shown in header
                 View headerView = (navigationView.getHeaderView(0));
                 TextView textViewmail = headerView.findViewById(R.id.emailView);
                 TextView textviewnombre = headerView.findViewById(R.id.Textviewnavnombre);
-
                 textViewmail.setText(email);
                 textviewnombre.setText("Angeles");
 
+                credentialManager.guardarCredenciales(email,password);
 
-                HomeFragment homeFragment = new HomeFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
-
-
-                CredentialManage nueva = new CredentialManage();
-                nueva.guardarCredenciales(this,email,password);
-
-
+                //Fragment fragment = new SearchRouteFragment();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commitAllowingStateLoss();
             }
         }
     }
 
+    @Override
+    public AppDatabase getDB() {
+        return appDatabase;
+    }
+
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return sharedPref;
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
 }

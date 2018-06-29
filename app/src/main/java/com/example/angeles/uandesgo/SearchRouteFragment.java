@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,75 +25,44 @@ import java.util.Date;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SearchRouteFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SearchRouteFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SearchRouteFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private static final String DATABASE_NAME = "movies_db";
+    private iComunicator mListener;
+    private static final String DATABASE_NAME = "uandesGo_db";
+    private List<com.example.angeles.uandesgo.db.Route> all;
+    private com.example.angeles.uandesgo.db.User user;
 
-    private List<Route> all;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public SearchRouteFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchRouteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SearchRouteFragment newInstance(String param1, String param2) {
-        SearchRouteFragment fragment = new SearchRouteFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof iComunicator) {
+            mListener = (iComunicator) context;
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
+        //final ListView lv = (ListView) view.findViewById(R.id.list_allRoutes);
+        final String value1 = mListener.getSharedPreferences().getString("email_guardado",null);
 
-        final AppDatabase appDatabase= Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
-        final ListView lv = (ListView) view.findViewById(R.id.list_allRoutes);
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        final String value1 = sharedPref.getString("email_dv",null);
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
 
+        if (fragment == null) {
+            fragment = new CardFragment();
+            fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
+        }
 
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
-                final User u = appDatabase.userDao().getOneUser(value1);
-
-                all = appDatabase.routeDao().getAllNotMineRoutes(u.getUid());
-                Handler mainHandler = new Handler(getActivity().getMainLooper());
+                final AppDatabase appDatabase = mListener.getDB();
+                user = appDatabase.userDao().getOneUser(value1);
+                all = appDatabase.routeDao().getAllNotMineRoutes(user.getUid());
+                Handler mainHandler = new Handler(mListener.getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -102,75 +72,33 @@ public class SearchRouteFragment extends Fragment {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 final int a = i;
-                                final AppDatabase appDatabase = Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
-
-
-
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
-
                                         final Route route = adapter.getItem(a);
                                         RequestedRoute rr= new RequestedRoute();
                                         rr.setRouteId(route.getRid());
-                                        rr.setUserId(u.getUid());
+                                        rr.setUserId(user.getUid());
                                         appDatabase.requestedDao().insertAll(rr);
                                     }
-                                }) .start();
+                                }).start();
                                 Toast.makeText(getContext(),"Ruta Pedida",Toast.LENGTH_SHORT).show();
-
-
-
                             }
                         });
-
                     }
                 });
-
             }
-        }) .start();
+        }) .start();*/
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_search_route, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }
