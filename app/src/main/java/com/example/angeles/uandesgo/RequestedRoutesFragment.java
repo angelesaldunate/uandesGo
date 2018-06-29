@@ -36,7 +36,7 @@ public class RequestedRoutesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String DATABASE_NAME = "movies_db";
+    private static final String DATABASE_NAME = "uandesGo_db";
     private List<Route> allroutes = new ArrayList<>();
     private List<Integer> idesroutes;
 
@@ -83,7 +83,7 @@ public class RequestedRoutesFragment extends Fragment {
         final AppDatabase appDatabase= Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
         final ListView lv = (ListView) view.findViewById(R.id.list_requested);
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        final String value1 = sharedPref.getString("email_dv",null);
+        final String value1 = sharedPref.getString("email_guardado",null);
 
 
         new Thread(new Runnable() {

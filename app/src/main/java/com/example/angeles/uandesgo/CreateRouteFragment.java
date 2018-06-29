@@ -38,7 +38,7 @@ public class CreateRouteFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String DATABASE_NAME = "movies_db";
+    private static final String DATABASE_NAME = "uandesGo_db";
     private List<Place> all;
 
 
@@ -82,7 +82,7 @@ public class CreateRouteFragment extends Fragment {
             public void run() {
                 all = appDatabase.placeDao().getAllPlaces();
                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                String value1 = sharedPref.getString("email_dv",null);
+                String value1 = sharedPref.getString("email_guardado",null);
                 final User u = appDatabase.userDao().getOneUser(value1);
 
                 Handler mainHandler = new Handler(getActivity().getMainLooper());

@@ -1,5 +1,6 @@
 package com.example.angeles.uandesgo;
 
+import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.Handler;
@@ -25,7 +26,7 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
     public RoutesAdapter(Context context, List<Route> forms) {
         super(context, 0, forms);
     }
-    private static final String DATABASE_NAME = "movies_db";
+    private static final String DATABASE_NAME = "uandesGo_db";
 
 
     @Override
@@ -39,11 +40,10 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
         final AppDatabase appDatabase = Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
 
         // Lookup view for data population
-        final TextView frdes = (TextView) convertView.findViewById(R.id.textViewdestino);
-        final TextView fruser = (TextView) convertView.findViewById(R.id.textView_usuario_sentido);
-
-        TextView frhour = (TextView) convertView.findViewById(R.id.textViewhora);
-        TextView frquantity = (TextView) convertView.findViewById(R.id.textViewgl);
+        final TextView textView = (TextView) convertView.findViewById(R.id.titleTextView);
+        //final TextView fruser = (TextView) convertView.findViewById(R.id.textView_usuario_sentido);
+        //TextView frhour = (TextView) convertView.findViewById(R.id.textViewhora);
+        //TextView frquantity = (TextView) convertView.findViewById(R.id.textViewgl);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -53,11 +53,17 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
 
                 Handler mainHandler = new Handler(getContext().getMainLooper());
                 mainHandler.post(new Runnable() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void run() {
-                        frdes.setText(fp.getName());
-                        fruser.setText(pr.getName());
 
+                        textView.setText(pr.getName() + " is ");
+                        if (!(place.getStarting_point())){
+                            textView.append("heading to ");
+                        } else {
+                            textView.append("leaving from ");
+                        }
+                        textView.append(fp.getName());
                     }
                 });
 
@@ -66,7 +72,7 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
             }}).start();
 
         // Populate the data into the template view using the data object
-        frhour.setText(place.getDep_time());
+        //frhour.setText(place.getDep_time());
         boolean goinlv = place.getStarting_point();
         String gl = "Voy a La Universidad";
 
@@ -74,7 +80,7 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
              gl = "Vuelvo de La Universidad";
         }
 
-        frquantity.setText(gl);
+        //frquantity.setText(gl);
 
         // Return the completed view to render on screen
         return convertView;
