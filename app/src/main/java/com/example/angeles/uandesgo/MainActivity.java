@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (appDatabase.userDao().getAllUser().size()==0){
                     appDatabase.placeDao ().insertAll(new Place("Escuela Militar", "Oriente"));
                     appDatabase.placeDao ().insertAll(new Place("Los Dominicos", "Oriente"));
-
                 }
             }
         }) .start();
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (!credentialManager.verificarCredenciales()) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra(EXTRA_MESSAGE,"Sent!");
-            //iniciar actividad solo si no existe anteriormente
             startActivityForResult(intent,SEND_MESSAGE);
         }
         else {

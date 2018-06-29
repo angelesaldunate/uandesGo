@@ -23,28 +23,10 @@ import com.example.angeles.uandesgo.db.User.User;
 
 import java.util.List;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SearchRouteFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SearchRouteFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SearchRouteFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final String DATABASE_NAME = "movies_db";
     private static AppDatabase appDatabase;
-
     private List<Route> all;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private iComunicator mListener;
     private CredentialManage credentialManager;
@@ -64,7 +46,6 @@ public class SearchRouteFragment extends Fragment {
 
         final ListView lv = (ListView) view.findViewById(R.id.list_allRoutes);
         final String value1 = credentialManager.getEmail();
-
 
         new Thread(new Runnable() {
             @Override
