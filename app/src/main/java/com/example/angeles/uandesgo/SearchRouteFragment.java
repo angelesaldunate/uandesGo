@@ -24,10 +24,9 @@ import com.example.angeles.uandesgo.db.User.User;
 import java.util.List;
 
 public class SearchRouteFragment extends Fragment {
-    private static final String DATABASE_NAME = "movies_db";
+    private static final String DATABASE_NAME = "uandesGo_db";
     private static AppDatabase appDatabase;
     private List<Route> all;
-
     private iComunicator mListener;
     private CredentialManage credentialManager;
 
