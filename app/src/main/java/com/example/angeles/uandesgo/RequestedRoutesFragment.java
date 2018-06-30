@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,77 +24,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RequestedRoutesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RequestedRoutesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RequestedRoutesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final String DATABASE_NAME = "uandesGo_db";
     private List<Route> allroutes = new ArrayList<>();
     private List<Integer> idesroutes;
+    private iComunicator mListener;
+    static private AppDatabase appDatabase;
+    static private SharedPreferences sharedPreferences;
 
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof iComunicator) {
+            mListener = (iComunicator) context;
+        }
+    }
 
     public RequestedRoutesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RequestedRoutesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RequestedRoutesFragment newInstance(String param1, String param2) {
-        RequestedRoutesFragment fragment = new RequestedRoutesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        appDatabase = mListener.getDb();
+        sharedPreferences = mListener.getSharedPreferences();
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState){
-
-        final AppDatabase appDatabase= Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
         final ListView lv = (ListView) view.findViewById(R.id.list_requested);
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        final String value1 = sharedPref.getString("email_guardado",null);
-
-
+        final ImageView request_button = view.findViewById(R.id.carImageView);
+        final String value1 = sharedPreferences.getString("email_guardado",null);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 final User u = appDatabase.userDao().getOneUser(value1);
-
                 idesroutes = appDatabase.requestedDao().getAllIdRoute(u.getUid());
-                System.out.println("ACAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                System.out.println(idesroutes.size());
+                //System.out.println("ACAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                //System.out.println(idesroutes.size());
                 for(int k=0; k<idesroutes.size() ; k++){
                     Route route = appDatabase.routeDao().getRoutebyId(idesroutes.get(k));
                     allroutes.add(route);
@@ -107,32 +75,16 @@ public class RequestedRoutesFragment extends Fragment {
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                final int a = i;
-                                final AppDatabase appDatabase = Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
-
-
-
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                        final Route route = adapter.getItem(a);
-                                        RequestedRoute rr= new RequestedRoute();
-                                        rr.setRouteId(route.getRid());
-                                        rr.setUserId(u.getUid());
-                                        appDatabase.requestedDao().insertAll(rr);
-                                    }
-                                }) .start();
+                                final Route route = adapter.getItem(i);
+                                RequestedRoute rr= new RequestedRoute();
+                                rr.setRouteId(route.getRid());
+                                rr.setUserId(u.getUid());
+                                appDatabase.requestedDao().insertAll(rr);
                                 Toast.makeText(getContext(),"Ruta Pedida",Toast.LENGTH_SHORT).show();
-
-
-
                             }
                         });
-
                     }
                 });
-
             }
         }) .start();
     }
@@ -145,39 +97,9 @@ public class RequestedRoutesFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_requested_routes, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        }
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }
