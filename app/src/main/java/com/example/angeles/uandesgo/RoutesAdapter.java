@@ -54,11 +54,11 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
                     @Override
                     public void run() {
 
-                        textView.setText(pr.getName() + " is ");
+                        textView.setText(pr.getName() + " está ");
                         if (!(place.getStarting_point())){
-                            textView.append("heading to ");
+                            textView.append("saliendo hacia ");
                         } else {
-                            textView.append("leaving from ");
+                            textView.append("saliendo desde ");
                         }
                         textView.append(fp.getName());
                     }
