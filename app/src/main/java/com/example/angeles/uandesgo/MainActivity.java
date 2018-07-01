@@ -162,16 +162,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SEND_MESSAGE) {
             if (resultCode == RESULT_OK) {
+
                 final String email = data.getStringExtra("email_devuelto");
                 final String password = data.getStringExtra("password_devuelto");
                 final String name = data.getStringExtra("nombre_devuelto");
                 final String phone = data.getStringExtra("telefono_devuelto");
-                credentialManager.guardarCredenciales(email,password,name);
+
                 setCredentialsOnHeader(email,name);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         if (appDatabase.userDao().getOneUser(email)== null){
+                            credentialManager.guardarCredenciales(email,password,name);
                             appDatabase.userDao().insertAll(new User( email, password));
                             int ide = appDatabase.userDao().getOneUser(email).getUid();
                             Profile pro = new Profile();
