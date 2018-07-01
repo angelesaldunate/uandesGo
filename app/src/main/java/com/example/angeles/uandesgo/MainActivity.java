@@ -169,13 +169,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        appDatabase.userDao().insertAll(new User( email, password));
-                        int ide = appDatabase.userDao().getOneUser(email).getUid();
-                        Profile pro = new Profile();
-                        pro.setUserId(ide);
-                        pro.setName("Angeles");
-                        pro.setPhone("+78329811");
-                        appDatabase.profileDao().insertAll(pro);
+                        if (appDatabase.userDao().getOneUser(email)== null){
+                            appDatabase.userDao().insertAll(new User( email, password));
+                            int ide = appDatabase.userDao().getOneUser(email).getUid();
+                            Profile pro = new Profile();
+                            pro.setUserId(ide);
+                            pro.setName("Angeles");
+                            pro.setPhone("+78329811");
+                            appDatabase.profileDao().insertAll(pro);
+                            Log.d("Cantidad", String.valueOf(appDatabase.userDao().getAllUser().size()));
+                        }
+
                     }
                 }) .start();
 

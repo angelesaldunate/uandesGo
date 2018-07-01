@@ -3,12 +3,16 @@ package com.example.angeles.uandesgo;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -22,6 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,38 +38,31 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.angeles.uandesgo.db.AppDatabase;
+import com.example.angeles.uandesgo.db.User.Profile.Profile;
+import com.example.angeles.uandesgo.db.User.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-/**
- * A login screen that offers login via email/password.
- */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, iComunicator  {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
 
-    // UI references.
+    private UserLoginTask mAuthTask = null;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private static final String DATABASE_NAME = "uandesGo_db";
+    static private AppDatabase appDatabase;
+    static private SharedPreferences sharedPreferences;
+    static private CredentialManage credentialManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -111,8 +110,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
+        final String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        //Revisar la base de datos para ver si tiene perfil o no, pero puede que no este creado en la bd
+        checkProfileExistence(email);
+
 
         boolean cancel = false;
         View focusView = null;
@@ -315,6 +317,40 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+    }
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
+
+    @Override
+    public CredentialManage getCredentialManage() {
+        return credentialManager;
+    }
+
+    @Override
+    public AppDatabase getDb() {
+        return appDatabase;
+    }
+
+    public void checkProfileExistence(final String email){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User current= appDatabase.userDao().getOneUser(email);
+                Fragment fragment= null;
+                if (current == null){
+                    //no hay usuario ni perfil
+                    fragment = new NewProfileFragment();
+                }else{// esta el usuario pero no el perfil
+                    if (appDatabase.profileDao().getOneProfile(current.getUid())==null){
+                        fragment = new NewProfileFragment();
+                    }
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.email_login_form,fragment).addToBackStack("null").commit();
+            }
+        }) .start();
+
     }
 }
 

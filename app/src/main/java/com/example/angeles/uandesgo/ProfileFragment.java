@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,9 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         appDatabase = mListener.getDb();
         sharedPreferences = mListener.getSharedPreferences();
-        user = getCurrentUser();
+        //getCurrentUser();
+        //Log.d ("NOmnreeeeee",user.getEmail());
+
     }
 
     @Override
@@ -53,8 +56,14 @@ public class ProfileFragment extends Fragment {
         mListener = null;
     }
 
-    private User getCurrentUser() {
-        String current_user_email = sharedPreferences.getString("email_guardado", "null");
-        return appDatabase.userDao().getOneUser(current_user_email);
+    private void getCurrentUser() {
+        final String current_user_email = sharedPreferences.getString("email_guardado", "null");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                 user = appDatabase.userDao().getOneUser(current_user_email);
+            }
+        });
+
     }
 }
