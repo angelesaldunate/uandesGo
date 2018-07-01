@@ -179,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             pro.setName(name);
                             pro.setPhone(phone);
                             appDatabase.profileDao().insertAll(pro);
-                            Log.d("Cantidad", String.valueOf(appDatabase.userDao().getAllUser().size()));
                         }
 
                     }
