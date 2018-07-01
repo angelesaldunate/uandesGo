@@ -43,6 +43,8 @@
     <string name="capacity">Capacidad</string>
     <string name="asientos_disponibles">Asientos Disponibles</string>
     <string name="number">+56999999999</string>
+    <string name="uandes">UAndes</string>
+    <string name="escuela_militar">Escuela Militar</string>
     <string-array name="Sectors">
         <item>@string/Nororiente</item>
     </string-array>

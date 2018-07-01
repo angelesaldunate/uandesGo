@@ -53,7 +53,6 @@ public class RequestedRoutesFragment extends Fragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState){
         final ListView lv = (ListView) view.findViewById(R.id.list_requested);
-        final ImageView request_button = view.findViewById(R.id.carImageView);
         final String value1 = sharedPreferences.getString("email_guardado",null);
         new Thread(new Runnable() {
             @Override

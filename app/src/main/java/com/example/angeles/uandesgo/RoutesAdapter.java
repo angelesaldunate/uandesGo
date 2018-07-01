@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
@@ -40,7 +41,10 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
         final AppDatabase appDatabase = Room.databaseBuilder(getContext(),AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
 
         // Lookup view for data population
-        final TextView textView = (TextView) convertView.findViewById(R.id.titleTextView);
+        final TextView driverTextView = (TextView) convertView.findViewById(R.id.driverTextView);
+        final TextView originTextView = convertView.findViewById(R.id.originTextView);
+        final TextView destinationTextView = convertView.findViewById(R.id.destinationTextView);
+        final ImageView directionIcon = convertView.findViewById(R.id.directionIcon);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -53,30 +57,18 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void run() {
-
-                        textView.setText(pr.getName() + " está ");
-                        if (!(place.getStarting_point())){
-                            textView.append("saliendo hacia ");
+                        boolean direction = place.getStarting_point();
+                        driverTextView.setText(pr.getName());
+                        if (direction){
+                            originTextView.setText(fp.getName());
+                            destinationTextView.setText("UAndes");
                         } else {
-                            textView.append("saliendo desde ");
+                            destinationTextView.setText(fp.getName());
+                            originTextView.setText("UAndes");
                         }
-                        textView.append(fp.getName());
                     }
                 });
-
-
-
             }}).start();
-
-
-        boolean goinlv = place.getStarting_point();
-        String gl = "Voy a La Universidad";
-
-        if (!goinlv){
-             gl = "Vuelvo de La Universidad";
-        }
-
-        //frquantity.setText(gl);
 
         // Return the completed view to render on screen
         return convertView;
