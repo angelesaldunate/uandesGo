@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -53,16 +54,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-
     private UserLoginTask mAuthTask = null;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private EditText mNameView;
+    private EditText mPhoneView;
     private View mProgressView;
     private View mLoginFormView;
     private static final String DATABASE_NAME = "uandesGo_db";
     static private AppDatabase appDatabase;
     static private SharedPreferences sharedPreferences;
     static private CredentialManage credentialManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        mNameView = (EditText) findViewById(R.id.name);
+        mPhoneView = (EditText) findViewById(R.id.phone);
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -104,62 +110,137 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (mAuthTask != null) {
             return;
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+                // Reset errors.
+                Handler mainHandler = new Handler(getMainLooper());
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mEmailView.setError(null);
+                        mPasswordView.setError(null);
+                    }
+                });
 
-        // Store values at the time of the login attempt.
-        final String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-        //Revisar la base de datos para ver si tiene perfil o no, pero puede que no este creado en la bd
-        checkProfileExistence(email);
+                // Store values at the time of the login attempt.
+                final String email = mEmailView.getText().toString();
+                final String password = mPasswordView.getText().toString();
+                final String name = mNameView.getText().toString();
+                final String phone = mPhoneView.getText().toString();
+
+                boolean cancel = false;
+                View focusView = null;
+
+                // Check for a valid password, if the user entered one.
+                if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPasswordView.setError(getString(R.string.error_invalid_password));
+                        }
+                    });
+                    focusView = mPasswordView;
+                    cancel = true;
+                }
+
+                // Check for a valid email address.
+                if (TextUtils.isEmpty(email)) {
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mEmailView.setError(getString(R.string.error_field_required));
+                        }
+                    });
+                    focusView = mEmailView;
+                    cancel = true;
+                } else if (!isEmailValid(email)) {
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mEmailView.setError(getString(R.string.error_invalid_email));
+                        }
+                    });
+                    focusView = mEmailView;
+                    cancel = true;
+                }
+
+                //Revisar la base de datos para ver si tiene perfil o no, pero puede que no este creado en la bd
+                boolean profile_exist = true;
+                User current= appDatabase.userDao().getOneUser(email);
+                if (current == null){
+                    //no hay usuario ni perfil
+                    profile_exist= false;
+                }else{// esta el usuario pero no el perfil
+                    if (appDatabase.profileDao().getOneProfile(current.getUid())==null){
+                        profile_exist = false;
+                    }
+                }
+
+                if (!profile_exist){
+
+                    if(TextUtils.isEmpty(name)){
+                        mainHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mNameView.setError(getString(R.string.error_field_required));
+                            }
+                        });
+                        focusView = mNameView;
+                        cancel = true;
+                    }
+                    if (TextUtils.isEmpty(phone)){
+                        mainHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mPhoneView.setError(getString(R.string.error_field_required));
+                            }
+                        });
+                        focusView = mPhoneView;
+                        cancel = true;
+                    }
+
+                }
+                final View focus = focusView;
+                if (cancel) {
+                    // There was an error; don't attempt login and focus the first
+                    // form field with an error.
+                    mainHandler.post(new Runnable() {
+                                         @Override
+                                         public void run() {
+                                             focus.requestFocus();
+                                         }
+                                     });
+                } else {
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Show a progress spinner, and kick off a background task to
+                            // perform the user login attempt.
+                            showProgress(true);
+                            mAuthTask = new UserLoginTask(email, password);
+                            mAuthTask.execute((Void) null);
+                            Context context = getApplicationContext();
+                            CharSequence text = "Credenciales Validas";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("email_devuelto",email);
+                            resultIntent.putExtra("password_devuelto",password);
+                            resultIntent.putExtra("nombre_devuelto", name);
+                            resultIntent.putExtra("telefono_devuelto",phone);
+                            setResult(MainActivity.RESULT_OK, resultIntent);
+                            finish();
+                        }
+                    });
+                }
+            }
+        }).start();
 
 
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-            Context context = getApplicationContext();
-            CharSequence text = "Credenciales Validas";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-
-            Intent resultIntent = new Intent();
-
-            resultIntent.putExtra("email_devuelto",email);
-            resultIntent.putExtra("password_devuelto",password);
-            setResult(MainActivity.RESULT_OK, resultIntent);
-            finish();
-        }
     }
 
     private boolean isEmailValid(String email) {
@@ -337,20 +418,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         new Thread(new Runnable() {
             @Override
             public void run() {
-                User current= appDatabase.userDao().getOneUser(email);
-                Fragment fragment= null;
-                if (current == null){
-                    //no hay usuario ni perfil
-                    fragment = new NewProfileFragment();
-                }else{// esta el usuario pero no el perfil
-                    if (appDatabase.profileDao().getOneProfile(current.getUid())==null){
-                        fragment = new NewProfileFragment();
-                    }
-                }
-                getSupportFragmentManager().beginTransaction().replace(R.id.email_login_form,fragment).addToBackStack("null").commit();
+
             }
         }) .start();
-
     }
 }
 

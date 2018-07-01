@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivityForResult(intent,SEND_MESSAGE);
         }
         else {
-            setCredentialsOnHeader(credentialManager.getEmail());
+            setCredentialsOnHeader(credentialManager.getEmail(),credentialManager.getName());
         }
     }
 
@@ -164,8 +164,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (resultCode == RESULT_OK) {
                 final String email = data.getStringExtra("email_devuelto");
                 final String password = data.getStringExtra("password_devuelto");
-                credentialManager.guardarCredenciales(email,password);
-                setCredentialsOnHeader(email);
+                final String name = data.getStringExtra("nombre_devuelto");
+                final String phone = data.getStringExtra("telefono_devuelto");
+                credentialManager.guardarCredenciales(email,password,name);
+                setCredentialsOnHeader(email,name);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -174,8 +176,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             int ide = appDatabase.userDao().getOneUser(email).getUid();
                             Profile pro = new Profile();
                             pro.setUserId(ide);
-                            pro.setName("Angeles");
-                            pro.setPhone("+78329811");
+                            pro.setName(name);
+                            pro.setPhone(phone);
                             appDatabase.profileDao().insertAll(pro);
                             Log.d("Cantidad", String.valueOf(appDatabase.userDao().getAllUser().size()));
                         }
@@ -188,13 +190,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void setCredentialsOnHeader(String email){
+    public void setCredentialsOnHeader(String email, String name){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = (navigationView.getHeaderView(0));
         TextView textViewmail = headerView.findViewById(R.id.emailView);
         TextView textviewnombre = headerView.findViewById(R.id.Textviewnavnombre);
         textViewmail.setText(email);
-        textviewnombre.setText("Angeles");
+        textviewnombre.setText(name);
         Fragment fragment = new SearchRouteFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
     }
