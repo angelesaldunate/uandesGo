@@ -173,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void run() {
                         if (appDatabase.userDao().getOneUser(email)== null){
-                            credentialManager.guardarCredenciales(email,password,name);
                             appDatabase.userDao().insertAll(new User( email, password));
                             int ide = appDatabase.userDao().getOneUser(email).getUid();
                             Profile pro = new Profile();
@@ -182,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             pro.setPhone(phone);
                             appDatabase.profileDao().insertAll(pro);
                         }
+                        credentialManager.guardarCredenciales(email,password,name);
+
 
                     }
                 }) .start();

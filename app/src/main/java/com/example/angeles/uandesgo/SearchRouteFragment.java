@@ -50,6 +50,7 @@ public class SearchRouteFragment extends Fragment {
             @Override
             public void run() {
                 final User u = appDatabase.userDao().getOneUser(value1);
+                Log.d("MAAAIL", value1);
                 all = appDatabase.routeDao().getAllNotMineRoutes(u.getUid());
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
