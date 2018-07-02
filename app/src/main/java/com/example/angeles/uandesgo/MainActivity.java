@@ -168,10 +168,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 final String name = data.getStringExtra("nombre_devuelto");
                 final String phone = data.getStringExtra("telefono_devuelto");
 
-                setCredentialsOnHeader(email,name);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        String current_name;
                         if (appDatabase.userDao().getOneUser(email)== null){
                             appDatabase.userDao().insertAll(new User( email, password));
                             int ide = appDatabase.userDao().getOneUser(email).getUid();
@@ -180,12 +180,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             pro.setName(name);
                             pro.setPhone(phone);
                             appDatabase.profileDao().insertAll(pro);
+                            current_name = name;
+
+                        }else {
+                            User current = appDatabase.userDao().getOneUser(email);
+                            Profile actual_profile = appDatabase.profileDao().getOneProfile(current.getUid());
+                            current_name = actual_profile.getName();
                         }
-                        credentialManager.guardarCredenciales(email,password,name);
+                        credentialManager.guardarCredenciales(email,password,current_name);
+
 
 
                     }
                 }) .start();
+                setCredentialsOnHeader(email,name);
+
 
             }
 
