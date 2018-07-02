@@ -70,7 +70,7 @@ public class  RequestedRoutesFragment extends Fragment {
                     public void run() {
                         final RoutesAdapter adapter = new RoutesAdapter(getContext(), allroutes);
                         lv.setAdapter(adapter);
-                   
+
                     }
                 });
             }

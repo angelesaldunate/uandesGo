@@ -80,11 +80,6 @@ public class RouteInfoFragment extends Fragment {
                         name_user.setText(nameUser);
                         dep_time.setText(departureTime);
                         actual_capacity.setText(requested+"/"+capacity);
-                        if (namePlace == "Escuela Militar"){
-                            map.setImageResource(R.drawable.mapaescuelau);
-
-                        }
-
                     }
                 });
             }
