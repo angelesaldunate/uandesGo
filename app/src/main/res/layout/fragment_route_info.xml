@@ -19,7 +19,7 @@
             android:textAlignment="center"
             android:textSize="36sp" />
         <ImageView
-            android:id="@+id/userImage"
+            android:id="@+id/mapImage"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:cropToPadding="true"

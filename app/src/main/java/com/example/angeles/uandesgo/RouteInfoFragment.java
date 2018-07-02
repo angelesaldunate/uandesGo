@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +20,6 @@ import com.example.angeles.uandesgo.db.AppDatabase;
 import com.example.angeles.uandesgo.db.RequestedRoute.RequestedRoute;
 import com.example.angeles.uandesgo.db.Route.Route;
 import com.example.angeles.uandesgo.db.User.User;
-
 import java.util.Calendar;
 import java.util.List;
 
@@ -87,7 +87,6 @@ public class RouteInfoFragment extends Fragment {
                         name_user.setText(nameUser);
                         dep_time.setText(getDate(Long.valueOf(departureTime)+15*60*1000));
                         actual_capacity.setText(requested+"/"+capacity);
-
                     }
                 });
             }
