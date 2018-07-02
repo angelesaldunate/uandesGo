@@ -9,6 +9,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.example.angeles.uandesgo.db.User.User;
 
@@ -28,6 +29,9 @@ public interface ProfileDao {
 
     @Query("DELETE FROM profile")
     void deleteAll();
+
+    @Update
+    void update(Profile profile);
 
     @Query("SELECT * FROM profile WHERE prid=:profile_id")
     Profile getProfileById(int profile_id);

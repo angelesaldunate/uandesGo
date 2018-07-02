@@ -36,6 +36,11 @@ public class CredentialManage {
         editor.remove("nombre_guardado");
         editor.apply();
     }
+    public void setName(String name){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("nombre_guardado",name);
+        editor.apply();
+    }
     public String getEmail() {
         return preferences.getString("email_guardado",null);
     }
