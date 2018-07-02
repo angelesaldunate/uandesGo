@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,10 @@ import com.example.angeles.uandesgo.db.Place.Place;
 import com.example.angeles.uandesgo.db.Route.Route;
 import com.example.angeles.uandesgo.db.User.User;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CreateRouteFragment extends Fragment {
     private List<Place> all;
@@ -90,7 +93,9 @@ public class CreateRouteFragment extends Fragment {
                                         } else {
                                             final Place place = adapter.getItem(a);
                                             Route rt = new Route();
-                                            rt.setDep_time(new Date().toString());
+                                            Long timestamp_long = System.currentTimeMillis()/1000;
+                                            String timestamp = timestamp_long.toString();
+                                            rt.setDep_time(timestamp);
                                             rt.setPlaceId(place.getPid());
 
                                             rt.setQuantity(Integer.valueOf(qty));
@@ -137,6 +142,13 @@ public class CreateRouteFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private String getDate(long time) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(time*1000);
+        String date = DateFormat.format("dd-MM-yyyy hh:mm:ss", cal).toString();
+        return date;
     }
 }
 

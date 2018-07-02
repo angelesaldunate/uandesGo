@@ -13,4 +13,5 @@ public interface iComunicator {
     public SharedPreferences getSharedPreferences();
     public CredentialManage getCredentialManage();
     public AppDatabase getDb();
+    public String getDate(Long time);
 }
