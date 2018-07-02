@@ -193,22 +193,7 @@ public class CreateRouteFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
 
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radioButton_going:
-                if (checked)
-                    // going
-                    break;
-            case R.id.radioButton_leaving:
-                if (checked)
-                    // Leaving
-                    break;
-        }
-    }
 
 
 }
