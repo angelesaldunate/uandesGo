@@ -63,12 +63,6 @@
                     android:text="MM:SS"
                     android:textAlignment="center"
                     android:textSize="32sp" />
-                <TextView
-                    android:id="@+id/dateTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:textSize="12sp"/>
             </LinearLayout>
 
         </LinearLayout>

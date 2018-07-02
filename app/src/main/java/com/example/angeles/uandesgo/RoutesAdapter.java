@@ -98,7 +98,6 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
         final TextView originTextView = convertView.findViewById(R.id.originTextView);
         final TextView destinationTextView = convertView.findViewById(R.id.destinationTextView);
         final ImageView directionIcon = convertView.findViewById(R.id.directionIcon);
-        final TextView dateTextView = convertView.findViewById(R.id.dateTextView);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -120,8 +119,6 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
                             destinationTextView.setText(place.getName());
                             originTextView.setText("UAndes");
                         }
-                        Long date_string = Long.valueOf(route.getDep_time());
-                        dateTextView.setText(mListener.getDate(date_string));
 
                     }
                 });
@@ -138,6 +135,7 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
         public void setData(Route route) {
             this.route = route;
             updateTimer(System.currentTimeMillis());
+
         }
 
         public void updateTimer(long currentTime) {
