@@ -93,7 +93,7 @@ public class CreateRouteFragment extends Fragment {
                                         } else {
                                             final Place place = adapter.getItem(a);
                                             Route rt = new Route();
-                                            Long timestamp_long = System.currentTimeMillis()/1000;
+                                            Long timestamp_long = System.currentTimeMillis();
                                             String timestamp = timestamp_long.toString();
                                             rt.setDep_time(timestamp);
                                             rt.setPlaceId(place.getPid());
