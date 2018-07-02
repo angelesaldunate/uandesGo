@@ -70,17 +70,7 @@ public class  RequestedRoutesFragment extends Fragment {
                     public void run() {
                         final RoutesAdapter adapter = new RoutesAdapter(getContext(), allroutes);
                         lv.setAdapter(adapter);
-                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                final Route route = adapter.getItem(i);
-                                RequestedRoute rr= new RequestedRoute();
-                                rr.setRouteId(route.getRid());
-                                rr.setUserId(u.getUid());
-                                appDatabase.requestedDao().insertAll(rr);
-                                Toast.makeText(getContext(),"Ruta Pedida",Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                   
                     }
                 });
             }

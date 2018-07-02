@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +19,6 @@ import com.example.angeles.uandesgo.db.AppDatabase;
 import com.example.angeles.uandesgo.db.RequestedRoute.RequestedRoute;
 import com.example.angeles.uandesgo.db.Route.Route;
 import com.example.angeles.uandesgo.db.User.User;
-
-import java.util.List;
 
 
 /**
@@ -76,10 +75,15 @@ public class RouteInfoFragment extends Fragment {
                         TextView name_user = (TextView) view.findViewById(R.id.info_name_user);
                         TextView dep_time = (TextView) view.findViewById(R.id.info_departure_time);
                         TextView actual_capacity = (TextView) view.findViewById(R.id.info_capacity);
+                        ImageView map = (ImageView) view.findViewById(R.id.mapImage);
                         name_Place.setText(namePlace);
                         name_user.setText(nameUser);
                         dep_time.setText(departureTime);
                         actual_capacity.setText(requested+"/"+capacity);
+                        if (namePlace == "Escuela Militar"){
+                            map.setImageResource(R.drawable.mapaescuelau);
+
+                        }
 
                     }
                 });
