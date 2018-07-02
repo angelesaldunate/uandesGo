@@ -170,11 +170,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 final String password = data.getStringExtra("password_devuelto");
                 final String name = data.getStringExtra("nombre_devuelto");
                 final String phone = data.getStringExtra("telefono_devuelto");
+                credentialManager.guardarCredenciales(email,password);
+
 
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String current_name;
                         if (appDatabase.userDao().getOneUser(email)== null){
                             appDatabase.userDao().insertAll(new User( email, password));
                             int ide = appDatabase.userDao().getOneUser(email).getUid();
@@ -183,15 +184,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             pro.setName(name);
                             pro.setPhone(phone);
                             appDatabase.profileDao().insertAll(pro);
-                            current_name = name;
+                            setNameOnHeader(name);
 
                         }else {
                             User current = appDatabase.userDao().getOneUser(email);
                             Profile actual_profile = appDatabase.profileDao().getOneProfile(current.getUid());
-                            current_name = actual_profile.getName();
+                            setNameOnHeader(actual_profile.getName());
                         }
-                        credentialManager.guardarCredenciales(email,password,current_name);
-
 
 
                     }
@@ -236,5 +235,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cal.add(Calendar.HOUR, -4);
         String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
         return date;
+    }
+    public void setNameOnHeader( String name){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = (navigationView.getHeaderView(0));
+        TextView textviewnombre = headerView.findViewById(R.id.Textviewnavnombre);
+        textviewnombre.setText(name);
     }
 }

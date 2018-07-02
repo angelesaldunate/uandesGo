@@ -129,7 +129,6 @@ public class ProfileFragment extends Fragment {
                         appDatabase.profileDao().update(updated_profile);
                     }
                 }).start();
-                credentialManage.setName(new_name);
                 setNameOnHeader( new_name);
                 Fragment fr = new ProfileFragment();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fr).addToBackStack("null").commit();

@@ -17,11 +17,10 @@ public class CredentialManage {
         this.activity = activity;
         preferences = activity.getPreferences(Context.MODE_PRIVATE);
     }
-    public void guardarCredenciales(String email, String password,String name ){
+    public void guardarCredenciales(String email, String password ){
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("email_guardado", email);
         editor.putString("password_guardada", password);
-        editor.putString("nombre_guardado",name);
         editor.apply();
     }
     public boolean verificarCredenciales(){
@@ -36,11 +35,7 @@ public class CredentialManage {
         editor.remove("nombre_guardado");
         editor.apply();
     }
-    public void setName(String name){
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("nombre_guardado",name);
-        editor.apply();
-    }
+
     public String getEmail() {
         return preferences.getString("email_guardado",null);
     }
