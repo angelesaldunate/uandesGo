@@ -47,6 +47,8 @@
     <string name="telefono">Telefono</string>
     <string name="uandes">UAndes</string>
     <string name="escuela_militar">Escuela Militar</string>
+    <string name="voy_a_la_uandes">Voy a la UAndes</string>
+    <string name="salgo_desde_la_uandes">Salgo desde la UAndes</string>
     <string-array name="Sectors">
         <item>@string/Nororiente</item>
     </string-array>

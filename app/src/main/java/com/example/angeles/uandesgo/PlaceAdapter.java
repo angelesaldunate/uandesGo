@@ -29,14 +29,10 @@ public class PlaceAdapter extends ArrayAdapter<Place> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_place_adapter, parent, false);
         }
         // Lookup view for data population
-        TextView fride = (TextView) convertView.findViewById(R.id.textViewide);
 
         TextView frName = (TextView) convertView.findViewById(R.id.textViewnombre);
-        TextView frZOne = (TextView) convertView.findViewById(R.id.textViewzona);
         // Populate the data into the template view using the data object
-        fride.setText(String.valueOf(place.getPid()));
         frName.setText(place.getName());
-        frZOne.setText(place.getZone());
 
         // Return the completed view to render on screen
         return convertView;
