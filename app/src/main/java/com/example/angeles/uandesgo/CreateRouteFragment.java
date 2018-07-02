@@ -53,14 +53,13 @@ public class CreateRouteFragment extends Fragment {
     }
 
 
-
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 all = appDatabase.placeDao().getAllPlaces();
-                String value1 = sharedPreferences.getString("email_guardado",null);
+                String value1 = sharedPreferences.getString("email_guardado", null);
                 final User u = appDatabase.userDao().getOneUser(value1);
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
@@ -88,8 +87,7 @@ public class CreateRouteFragment extends Fragment {
                                                     quantity.requestFocus();
                                                 }
                                             });
-                                        }
-                                        else{
+                                        } else {
                                             final Place place = adapter.getItem(a);
                                             Route rt = new Route();
                                             rt.setDep_time(new Date().toString());
@@ -101,22 +99,19 @@ public class CreateRouteFragment extends Fragment {
                                             appDatabase.routeDao().insertAll(rt);
                                             getActivity().runOnUiThread(new Runnable() {
                                                 public void run() {
-                                                    Toast.makeText(getContext(),"Ruta Creada",Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getContext(), "Ruta Creada", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
 
 
                                             MyRoutesFragment homeFragment = new MyRoutesFragment();
-                                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,homeFragment).addToBackStack("null").commit();
+                                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew, homeFragment).addToBackStack("null").commit();
 
 
                                         }
 
                                     }
-                                }) .start();
-
-
-
+                                }).start();
 
 
                             }
@@ -125,7 +120,7 @@ public class CreateRouteFragment extends Fragment {
                 });
 
             }
-        }) .start();
+        }).start();
 
     }
 
@@ -143,4 +138,5 @@ public class CreateRouteFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+}
 
