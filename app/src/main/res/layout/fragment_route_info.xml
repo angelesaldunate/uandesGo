@@ -15,67 +15,111 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/capriola"
-            android:text="Información de Ruta "
+            android:text="Información de Ruta"
             android:textAlignment="center"
-            android:textSize="24sp" />
+            android:textSize="36sp" />
         <ImageView
             android:id="@+id/userImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="180dp"
             android:cropToPadding="true"
-            android:src="@drawable/animal"
+            android:src="@drawable/mapa"
             android:textAlignment="center"
             />
 
-        <TextView
-            android:id="@+id/info_name_place"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/capriola"
-            android:text="Nombre"
-            android:paddingLeft="16dp"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/info_capacity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/capriola"
-            android:text="Capacidad/"
-            android:paddingLeft="16dp"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/info_departure_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/capriola"
-            android:text="departure:"
-            android:paddingLeft="16dp"
-            android:textSize="24sp" />
-        <TextView
-            android:id="@+id/info_name_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/capriola"
-            android:text="Nombre Usuario"
-            android:paddingLeft="16dp"
-            android:textSize="24sp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:orientation="horizontal"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/info_name_place"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/capriola"
+                android:text="Nombre"
+                android:textSize="28sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/seatIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_seat"/>
+            <TextView
+                android:id="@+id/info_capacity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/capriola"
+                android:text="Capacidad/"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/departureIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_clock"/>
+            <TextView
+                android:id="@+id/info_departure_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/capriola"
+                android:text="Departure:"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/profileIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_person"/>
+            <TextView
+                android:id="@+id/info_name_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/capriola"
+                android:text="Nombre Usuario"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
             <Button
                 android:id="@+id/button_request"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
+                android:fontFamily="@font/capriola"
                 android:layout_height="wrap_content"
                 android:text="Pedir Ruta"
-                />
+                android:textSize="18sp" />
 
 
         </LinearLayout>

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.example.angeles.uandesgo.db.RequestedRoute.RequestedRoute;
 import com.example.angeles.uandesgo.db.Route.Route;
 import com.example.angeles.uandesgo.db.User.User;
 
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -67,6 +69,7 @@ public class RouteInfoFragment extends Fragment {
                 final String departureTime = route.getDep_time();
                 final String capacity = String.valueOf(route.getQuantity());
                 final String requested = String.valueOf(appDatabase.requestedDao().getAllRequestsForRoute(route.getRid()));
+                final Boolean direction = route.getStarting_point();
 
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
@@ -76,9 +79,13 @@ public class RouteInfoFragment extends Fragment {
                         TextView name_user = (TextView) view.findViewById(R.id.info_name_user);
                         TextView dep_time = (TextView) view.findViewById(R.id.info_departure_time);
                         TextView actual_capacity = (TextView) view.findViewById(R.id.info_capacity);
-                        name_Place.setText(namePlace);
+                        if (!direction) {
+                            name_Place.setText("UAndes a " + namePlace);
+                        } else {
+                            name_Place.setText(namePlace + " a UAndes");
+                        }
                         name_user.setText(nameUser);
-                        dep_time.setText(departureTime);
+                        dep_time.setText(getDate(Long.valueOf(departureTime)+15*60*1000));
                         actual_capacity.setText(requested+"/"+capacity);
 
                     }
@@ -122,6 +129,13 @@ public class RouteInfoFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    private String getDate(long time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(time-4*60*60*1000);
+        String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
+        return date;
     }
+}
 
 
