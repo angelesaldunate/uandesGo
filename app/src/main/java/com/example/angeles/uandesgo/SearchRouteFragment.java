@@ -76,10 +76,9 @@ public class SearchRouteFragment extends Fragment {
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Log.d("ID OR ROUTE",String.valueOf(all.get(i).getRid()));
                                 Fragment info_route = new RouteInfoFragment();
                                 Bundle ide = new Bundle();
-                                ide.putInt("route_id",all.get(i).getRid());
+                                ide.putInt("route_id",adapter.getItem(i).getRid());
                                 info_route.setArguments(ide);
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,info_route).addToBackStack("null").commit();
 

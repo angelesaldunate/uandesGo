@@ -10,12 +10,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
 import com.example.angeles.uandesgo.db.RequestedRoute.RequestedRoute;
 import com.example.angeles.uandesgo.db.Route.Route;
+import com.example.angeles.uandesgo.db.User.User;
 
 import java.util.List;
 
@@ -83,14 +85,29 @@ public class RouteInfoFragment extends Fragment {
                 });
             }
         }).start();
-                /*
-                RequestedRoute rr= new RequestedRoute();
-                rr.setRouteId(route.getRid());
-                rr.setUserId(u.getUid());
-                appDatabase.requestedDao().insertAll(rr);
+        Button buton_request = (Button) view.findViewById(R.id.button_request);
+        buton_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        User current = appDatabase.userDao().getOneUser(credentialManager.getEmail());
+                        RequestedRoute rr= new RequestedRoute();
+                        rr.setRouteId(ide_route);
+                        rr.setUserId(current.getUid());
+                        appDatabase.requestedDao().insertAll(rr);
+                    }
+                }).start();
+
+                Toast.makeText(getContext(),"Ruta Pedida",Toast.LENGTH_SHORT).show();
+                Fragment requested_fragment = new RequestedRoutesFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,requested_fragment).addToBackStack("null").commit();
+
             }
-        }) .start();
-        Toast.makeText(getContext(),"Ruta Pedida",Toast.LENGTH_SHORT).show();*/
+
+        });
+
 
     }
     public void onAttach(Context context) {
