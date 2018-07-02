@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
 import com.example.angeles.uandesgo.db.Place.Place;
+import com.example.angeles.uandesgo.db.RequestedRoute.RequestedRoute;
 import com.example.angeles.uandesgo.db.Route.Route;
 import com.example.angeles.uandesgo.db.User.Profile.Profile;
 import com.example.angeles.uandesgo.db.User.User;
@@ -98,12 +99,14 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
         final TextView originTextView = convertView.findViewById(R.id.originTextView);
         final TextView destinationTextView = convertView.findViewById(R.id.destinationTextView);
         final ImageView directionIcon = convertView.findViewById(R.id.directionIcon);
+        final TextView spotsTextView = convertView.findViewById(R.id.spotsTextView);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 final Place place = appDatabase.placeDao().getPlacebyId(route.getPlaceId());
                 final User up = appDatabase.userDao().getUserById(route.getUserId());
                 final Profile profile = appDatabase.profileDao().getOneProfile(route.getUserId());
+                final int requests = appDatabase.requestedDao().getAllRequestsForRoute(route.getRid());
 
                 Handler mainHandler = new Handler(getContext().getMainLooper());
                 mainHandler.post(new Runnable() {
@@ -119,6 +122,7 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
                             destinationTextView.setText(place.getName());
                             originTextView.setText("UAndes");
                         }
+                        spotsTextView.setText((route.getQuantity() - requests) + "/" + route.getQuantity() + " disponibles");
 
                     }
                 });
@@ -143,8 +147,7 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
             if (timeDiff > 0) {
                 int seconds = (int) (timeDiff / 1000) % 60;
                 int minutes = (int) ((timeDiff / (1000 * 60)) % 60);
-                int hours = (int) ((timeDiff / (1000 * 60 * 60)) % 24);
-                tvTimer.setText(hours + ":" + minutes + ":" + seconds);
+                tvTimer.setText(String.format("%02d:%02d", minutes, seconds));
             } else {
                 tvTimer.setText("Expirado!!");
             }

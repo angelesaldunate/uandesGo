@@ -21,6 +21,8 @@ public interface RequestedDao {
     @Query("SELECT routeId FROM requestedroute WHERE userId=:userId")
     List<Integer> getAllIdRoute(int userId);
 
+    @Query("SELECT COUNT(*) FROM requestedroute WHERE routeId=:routeId")
+    int getAllRequestsForRoute (int routeId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(RequestedRoute... requestedRoutes);
