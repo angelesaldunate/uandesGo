@@ -16,7 +16,7 @@
         android:textAlignment="center"
         android:textSize="24sp" />
 
-    <ListView
+    <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/list_requested"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
