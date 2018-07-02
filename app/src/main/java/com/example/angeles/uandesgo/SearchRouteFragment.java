@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +22,11 @@ import com.example.angeles.uandesgo.db.RequestedRoute.RequestedRoute;
 import com.example.angeles.uandesgo.db.Route.Route;
 import com.example.angeles.uandesgo.db.User.User;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class SearchRouteFragment extends Fragment {
     private static final String DATABASE_NAME = "uandesGo_db";
@@ -45,17 +50,28 @@ public class SearchRouteFragment extends Fragment {
 
         final ListView lv = (ListView) view.findViewById(R.id.list_allRoutes);
         final String value1 = credentialManager.getEmail();
+        Log.d("MAAAAAILL",value1, null);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 final User u = appDatabase.userDao().getOneUser(value1);
                 all = appDatabase.routeDao().getAllNotMineRoutes(u.getUid());
+                final List<Route> filtered_routes = new ArrayList<Route>() ;
+                Long currentTime = System.currentTimeMillis();
+                for (int i = 0; i<all.size();i++){
+                    Route posible_route = all.get(i);
+                    long timeDiff = Long.valueOf(String.valueOf(posible_route.getDep_time()))+15*60*1000 - currentTime;
+                    if (timeDiff > 0) {
+                        filtered_routes.add(all.get(i));
+                    }
+                }
+
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        final RoutesAdapter adapter = new RoutesAdapter(getContext(), all);
+                        final RoutesAdapter adapter = new RoutesAdapter(getContext(), filtered_routes);
                         lv.setAdapter(adapter);
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override

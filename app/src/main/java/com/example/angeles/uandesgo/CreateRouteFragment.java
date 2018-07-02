@@ -108,10 +108,8 @@ public class CreateRouteFragment extends Fragment {
                                                 }
                                             });
 
-
                                             MyRoutesFragment homeFragment = new MyRoutesFragment();
                                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew, homeFragment).addToBackStack("null").commit();
-
 
                                         }
 
