@@ -60,8 +60,6 @@ public class SearchRouteFragment extends Fragment {
                 final List<Route> filtered_routes = new ArrayList<Route>() ;
                 Long currentTime = System.currentTimeMillis();
                 for (int i = 0; i<all.size();i++){
-                    Log.d("ID OR ROUTE",String.valueOf(all.get(i).getRid()));
-                    Log.d("NAME", String.valueOf(appDatabase.profileDao().getOneProfile(all.get(i).getUserId()).getName()));
                     Route posible_route = all.get(i);
                     long timeDiff = Long.valueOf(String.valueOf(posible_route.getDep_time()))+15*60*1000 - currentTime;
                     if (timeDiff > 0) {
@@ -73,7 +71,7 @@ public class SearchRouteFragment extends Fragment {
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        final RoutesAdapter adapter = new RoutesAdapter(getContext(), all);
+                        final RoutesAdapter adapter = new RoutesAdapter(getContext(), filtered_routes);
                         lv.setAdapter(adapter);
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override

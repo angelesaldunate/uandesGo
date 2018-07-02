@@ -76,7 +76,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivityForResult(intent,SEND_MESSAGE);
         }
         else {
-            setCredentialsOnHeader(credentialManager.getEmail(),credentialManager.getName());
+            setCredentialsOnHeader(credentialManager.getEmail());
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int ide_user = appDatabase.userDao().getOneUser(credentialManager.getEmail()).getUid();
+                    String name = appDatabase.profileDao().getOneProfile(ide_user).getName();
+                    setNameOnHeader(name);
+                }
+            }).start();
         }
     }
 
@@ -195,20 +203,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     }
                 }) .start();
-                setCredentialsOnHeader(email,name);
+                setCredentialsOnHeader(email);
 
 
             }
         }
     }
 
-    public void setCredentialsOnHeader(String email, String name){
+    public void setCredentialsOnHeader(String email){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = (navigationView.getHeaderView(0));
         TextView textViewmail = headerView.findViewById(R.id.emailView);
         TextView textviewnombre = headerView.findViewById(R.id.Textviewnavnombre);
         textViewmail.setText(email);
-        textviewnombre.setText(name);
         Fragment fragment = new SearchRouteFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
     }
