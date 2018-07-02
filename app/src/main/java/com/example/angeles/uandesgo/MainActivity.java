@@ -8,6 +8,7 @@ import android.graphics.LightingColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -26,7 +27,9 @@ import com.example.angeles.uandesgo.db.Place.Place;
 import com.example.angeles.uandesgo.db.User.Profile.Profile;
 import com.example.angeles.uandesgo.db.User.User;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
@@ -197,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
             }
-
         }
     }
 
@@ -225,5 +227,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public AppDatabase getDb() {
         return appDatabase;
+    }
+
+    @Override
+    public String getDate(Long time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(time*1000);
+        cal.add(Calendar.HOUR, -4);
+        String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
+        return date;
     }
 }

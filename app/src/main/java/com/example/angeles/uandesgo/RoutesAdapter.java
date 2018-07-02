@@ -70,8 +70,8 @@ public class RoutesAdapter extends ArrayAdapter<Route> {
                             destinationTextView.setText(place.getName());
                             originTextView.setText("UAndes");
                         }
-                        String date_string = route.getDep_time();
-                        dateTextView.setText(date_string);
+                        Long date_string = Long.valueOf(route.getDep_time());
+                        dateTextView.setText(mListener.getDate(date_string));
 
                     }
                 });

@@ -414,6 +414,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return appDatabase;
     }
 
+    @Override
+    public String getDate(Long time) {
+        return null;
+    }
+
     public void checkProfileExistence(final String email){
         new Thread(new Runnable() {
             @Override
