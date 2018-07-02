@@ -59,8 +59,7 @@ public class  RequestedRoutesFragment extends Fragment {
             public void run() {
                 final User u = appDatabase.userDao().getOneUser(value1);
                 idesroutes = appDatabase.requestedDao().getAllIdRoute(u.getUid());
-                //System.out.println("ACAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                //System.out.println(idesroutes.size());
+
                 for(int k=0; k<idesroutes.size() ; k++){
                     Route route = appDatabase.routeDao().getRoutebyId(idesroutes.get(k));
                     allroutes.add(route);

@@ -1,0 +1,88 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.angeles.uandesgo.RouteInfoFragment">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/info_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/capriola"
+            android:text="Información de Ruta "
+            android:textAlignment="center"
+            android:textSize="24sp" />
+        <ImageView
+            android:id="@+id/userImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cropToPadding="true"
+            android:src="@drawable/animal"
+            android:textAlignment="center"
+            />
+
+        <TextView
+            android:id="@+id/info_name_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/capriola"
+            android:text="Nombre"
+            android:paddingLeft="16dp"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/info_capacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/capriola"
+            android:text="Capacidad/"
+            android:paddingLeft="16dp"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/info_departure_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/capriola"
+            android:text="departure:"
+            android:paddingLeft="16dp"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/info_name_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/capriola"
+            android:text="Nombre Usuario"
+            android:paddingLeft="16dp"
+            android:textSize="24sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <Button
+                android:id="@+id/button_request"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pedir Ruta"
+                />
+
+
+        </LinearLayout>
+
+
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+
+</FrameLayout>
