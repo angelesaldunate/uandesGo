@@ -24,10 +24,14 @@ public interface RequestedDao {
     @Query("SELECT COUNT(*) FROM requestedroute WHERE routeId=:routeId")
     int getAllRequestsForRoute (int routeId);
 
+    @Query("SELECT * FROM requestedroute WHERE routeId=:routeId AND userId=:userId" )
+    RequestedRoute getOneRequestedRoute (int userId,int routeId);
+
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(RequestedRoute... requestedRoutes);
 
 
-    @Query("DELETE FROM requestedroute")
-    void deleteAll();
+    @Query("DELETE FROM requestedroute Where rrid=:rRid")
+    void delete(int rRid);
 }

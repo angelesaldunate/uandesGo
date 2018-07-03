@@ -35,6 +35,7 @@ public class  RequestedRoutesFragment extends Fragment {
     private List<Route> allroutes = new ArrayList<>();
     private List<Integer> idesroutes;
     private iComunicator mListener;
+    private CredentialManage credentialManager;
     static private AppDatabase appDatabase;
     static private SharedPreferences sharedPreferences;
 
@@ -55,6 +56,8 @@ public class  RequestedRoutesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         appDatabase = mListener.getDb();
         sharedPreferences = mListener.getSharedPreferences();
+        credentialManager = new CredentialManage(getActivity());
+
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState){
@@ -101,10 +104,24 @@ public class  RequestedRoutesFragment extends Fragment {
                         listView.setMenuCreator(creator);
                         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                             @Override
-                            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
                                 switch (index) {
                                     case 0:
-                                        Toast.makeText(getContext(), String.valueOf(allroutes.get(position).getPlaceId()), Toast.LENGTH_SHORT).show();
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                int ide_route = allroutes.get(position).getRid();
+                                                User current = appDatabase.userDao().getOneUser(credentialManager.getEmail());
+                                                Route route = appDatabase.routeDao().getRoutebyId(ide_route);
+                                                RequestedRoute clicked_route = appDatabase.requestedDao().getOneRequestedRoute(current.getUid(),route.getRid());
+                                                appDatabase.requestedDao().delete(clicked_route.getRrid());
+                                            }
+                                        }).start();
+
+                                        Toast.makeText(getContext(),"Ruta Eliminada",Toast.LENGTH_SHORT).show();
+                                        Fragment requested_fragment = new RequestedRoutesFragment();
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,requested_fragment).addToBackStack("null").commit();
+
                                         break;
                                 }
                                 // false : close the menu; true : not close the menu
