@@ -83,6 +83,7 @@ public class SearchRouteFragment extends Fragment {
                 }
                 if (zone_name!= null){
 
+                    if (zone_name!= "Sin Filtro"){
                     List<Route> filtered_routes_byzone = new ArrayList<Route>() ;
                     List<Integer> places_ides = appDatabase.placeDao().getIndexByPlace(zone_name);
 
@@ -93,13 +94,17 @@ public class SearchRouteFragment extends Fragment {
                         }
                     }
 
-                    filtered_routes= filtered_routes_byzone;
+                    filtered_routes= filtered_routes_byzone;}
+                    else{
+                        filtered_routes= filtered_routes1;
+                    }
 
                 }else {
                     filtered_routes = filtered_routes1;
                 }
 
                 final List<String> spinnerArray =  appDatabase.placeDao().getNamesZones();
+                spinnerArray.add("Sin Filtro");
 
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
@@ -138,7 +143,6 @@ public class SearchRouteFragment extends Fragment {
             public void onClick(View v) {
                 Spinner spinner = (Spinner) final_view.findViewById(R.id.spinner_sectors_search);
                 String text = spinner.getSelectedItem().toString();
-                Log.d("ZONENAMEEEE",text);
                 Fragment filter = new SearchRouteFragment();
                 Bundle ide = new Bundle();
                 ide.putString("zone_name",text);
