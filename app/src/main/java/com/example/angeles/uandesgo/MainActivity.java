@@ -1,12 +1,16 @@
 package com.example.angeles.uandesgo;
 
+import android.Manifest;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.LightingColorFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -45,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        appDatabase = Room.databaseBuilder(this,AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
+        appDatabase = Room.databaseBuilder(this, AppDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         credentialManager = new CredentialManage(this);
         /////////////////////////////////////////////////////////////////////////
@@ -62,20 +66,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (appDatabase.userDao().getAllUser().size()==0){
-                    appDatabase.placeDao ().insertAll(new Place("Escuela Militar", "Oriente"));
-                    appDatabase.placeDao ().insertAll(new Place("Los Dominicos", "Oriente"));
+                if (appDatabase.userDao().getAllUser().size() == 0) {
+                    appDatabase.placeDao().insertAll(new Place("Escuela Militar", "Oriente"));
+                    appDatabase.placeDao().insertAll(new Place("Los Dominicos", "Oriente"));
                 }
             }
-        }) .start();
+        }).start();
 
 
         if (!credentialManager.verificarCredenciales()) {
             Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra(EXTRA_MESSAGE,"Sent!");
-            startActivityForResult(intent,SEND_MESSAGE);
-        }
-        else {
+            intent.putExtra(EXTRA_MESSAGE, "Sent!");
+            startActivityForResult(intent, SEND_MESSAGE);
+        } else {
             setCredentialsOnHeader(credentialManager.getEmail());
             new Thread(new Runnable() {
                 @Override
@@ -128,27 +131,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_create) {
-            fragment=new CreateRouteFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+            fragment = new CreateRouteFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew, fragment).addToBackStack("null").commit();
 
         } else if (id == R.id.nav_search) {
-            fragment=new SearchRouteFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+            fragment = new SearchRouteFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew, fragment).addToBackStack("null").commit();
 
 
         } else if (id == R.id.nav_myroutes) {
-            fragment=new MyRoutesFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+            fragment = new MyRoutesFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew, fragment).addToBackStack("null").commit();
 
 
         } else if (id == R.id.nav_request) {
-            fragment=new RequestedRoutesFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+            fragment = new RequestedRoutesFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew, fragment).addToBackStack("null").commit();
 
 
         } else if (id == R.id.nav_profile) {
-            fragment=new ProfileFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+            fragment = new ProfileFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.framenew, fragment).addToBackStack("null").commit();
 
 
         } else if (id == R.id.nav_logout) {
@@ -163,9 +166,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void logOut() {
         credentialManager.borrarCredenciales();
         Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra(EXTRA_MESSAGE,"Sent!");
+        intent.putExtra(EXTRA_MESSAGE, "Sent!");
         //iniciaractividad solo si no existe anteriormente
-        startActivityForResult(intent,SEND_MESSAGE);
+        startActivityForResult(intent, SEND_MESSAGE);
 
     }
 
@@ -178,14 +181,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 final String password = data.getStringExtra("password_devuelto");
                 final String name = data.getStringExtra("nombre_devuelto");
                 final String phone = data.getStringExtra("telefono_devuelto");
-                credentialManager.guardarCredenciales(email,password);
+                credentialManager.guardarCredenciales(email, password);
 
 
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if (appDatabase.userDao().getOneUser(email)== null){
-                            appDatabase.userDao().insertAll(new User( email, password));
+                        if (appDatabase.userDao().getOneUser(email) == null) {
+                            appDatabase.userDao().insertAll(new User(email, password));
                             int ide = appDatabase.userDao().getOneUser(email).getUid();
                             Profile pro = new Profile();
                             pro.setUserId(ide);
@@ -194,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             appDatabase.profileDao().insertAll(pro);
                             setNameOnHeader(name);
 
-                        }else {
+                        } else {
                             User current = appDatabase.userDao().getOneUser(email);
                             Profile actual_profile = appDatabase.profileDao().getOneProfile(current.getUid());
                             setNameOnHeader(actual_profile.getName());
@@ -202,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
                     }
-                }) .start();
+                }).start();
                 setCredentialsOnHeader(email);
 
 
@@ -210,14 +213,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void setCredentialsOnHeader(String email){
+    public void setCredentialsOnHeader(String email) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = (navigationView.getHeaderView(0));
         TextView textViewmail = headerView.findViewById(R.id.emailView);
         TextView textviewnombre = headerView.findViewById(R.id.Textviewnavnombre);
         textViewmail.setText(email);
         Fragment fragment = new SearchRouteFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fragment).addToBackStack("null").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.framenew, fragment).addToBackStack("null").commit();
     }
 
     @Override
@@ -238,11 +241,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public String getDate(Long time) {
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(time*1000);
+        cal.setTimeInMillis(time * 1000);
         cal.add(Calendar.HOUR, -4);
         String date = DateFormat.format("dd-MM-yyyy HH:mm:ss", cal).toString();
         return date;
     }
+
+    @Override
+    public void make_phone_call(String number) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + number));
+        startActivity(intent);
+    }
+
+    @Override
+    public void send_email(String destination) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",destination, null));
+        startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+    }
+
     public void setNameOnHeader( String name){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = (navigationView.getHeaderView(0));

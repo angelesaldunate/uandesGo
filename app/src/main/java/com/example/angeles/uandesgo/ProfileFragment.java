@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
@@ -91,6 +93,8 @@ public class ProfileFragment extends Fragment {
         final Button edit_button = (Button) view.findViewById(R.id.buttonEdit);
         final Button ok_button = (Button) actual_view.findViewById(R.id.button_ok);
         final Button cancel_button = (Button) actual_view.findViewById(R.id.button_cancel);
+        final ConstraintLayout phone_call = actual_view.findViewById(R.id.user_address_layout);
+        final LinearLayout email = actual_view.findViewById(R.id.user_email_layout);
         edit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +147,23 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        phone_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView user_phone = actual_view.findViewById(R.id.user_phone);
+                String number = user_phone.getText().toString();
+                mListener.make_phone_call(number);
+            }
+        });
 
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView user_email = actual_view.findViewById(R.id.user_email);
+                String email = user_email.getText().toString();
+                mListener.send_email(email);
+            }
+        });
 
     }
 

@@ -419,6 +419,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return null;
     }
 
+    @Override
+    public void make_phone_call(String number) {
+        return;
+    }
+
+    @Override
+    public void send_email(String destination) {
+        return;
+    }
+
     public void checkProfileExistence(final String email){
         new Thread(new Runnable() {
             @Override

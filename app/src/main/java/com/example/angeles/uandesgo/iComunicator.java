@@ -14,4 +14,6 @@ public interface iComunicator {
     public CredentialManage getCredentialManage();
     public AppDatabase getDb();
     public String getDate(Long time);
+    public void make_phone_call(String number);
+    public void send_email(String destination);
 }
