@@ -86,17 +86,34 @@ public class  RequestedRoutesFragment extends Fragment {
                                 // create "open" item
                                 SwipeMenuItem openItem = new SwipeMenuItem(getContext());
                                 // set item background
-                                openItem.setBackground(new ColorDrawable(Color.RED));
+                                openItem.setBackground(new ColorDrawable(Color.TRANSPARENT));
                                 // set item width
                                 openItem.setWidth(170);
                                 // set item title
-                                openItem.setIcon(R.drawable.ic_delete_white);
+                                openItem.setIcon(R.drawable.ic_delete);
                                 // set item title fontsize
                                 openItem.setTitleSize(24);
                                 // set item title font color
                                 openItem.setTitleColor(Color.RED);
                                 // add to menu
                                 menu.addMenuItem(openItem);
+
+                                SwipeMenuItem openItem1 = new SwipeMenuItem(getContext());
+                                // set item background
+                                openItem1.setBackground(new ColorDrawable(Color.TRANSPARENT));
+                                // set item width
+                                openItem1.setWidth(170);
+                                // set item title
+                                openItem1.setTitle("Perfil");
+                                // set item title fontsize
+                                openItem1.setTitleSize(18);
+                                // set item title font color
+                                openItem1.setTitleColor(Color.BLACK);
+                                // add to menu
+                                menu.addMenuItem(openItem1);
+
+
+
                             }
                         };
 
@@ -121,6 +138,15 @@ public class  RequestedRoutesFragment extends Fragment {
                                         Toast.makeText(getContext(),"Pedido Eliminado",Toast.LENGTH_SHORT).show();
                                         Fragment requested_fragment = new RequestedRoutesFragment();
                                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,requested_fragment).addToBackStack("null").commit();
+
+                                        break;
+                                    case 1:
+
+                                        Fragment info_route = new OtherUserProfileFragment();
+                                        Bundle ide = new Bundle();
+                                        ide.putInt("user_id",allroutes.get(position).getUserId());
+                                        info_route.setArguments(ide);
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,info_route).addToBackStack("null").commit();
 
                                         break;
                                 }

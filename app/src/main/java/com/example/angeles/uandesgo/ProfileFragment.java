@@ -133,9 +133,9 @@ public class ProfileFragment extends Fragment {
                         appDatabase.profileDao().update(updated_profile);
                     }
                 }).start();
-                setNameOnHeader( new_name);
+                setNameOnHeader(new_name);
                 Fragment fr = new ProfileFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fr).addToBackStack("null").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew, fr).addToBackStack("null").commit();
 
             }
         });
@@ -143,7 +143,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment fr = new ProfileFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,fr).addToBackStack("null").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew, fr).addToBackStack("null").commit();
             }
         });
 
@@ -164,7 +164,6 @@ public class ProfileFragment extends Fragment {
                 mListener.send_email(email);
             }
         });
-
     }
 
         @Override
