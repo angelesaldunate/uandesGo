@@ -1,68 +1,38 @@
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
     tools:context="com.example.angeles.uandesgo.OtherUserProfileFragment">
 
     <ImageView
         android:id="@+id/userImage_o"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:cropToPadding="true"
-        android:src="@drawable/animal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@drawable/animal" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/user_name_o"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/capriola"
-        android:text=""
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userImage" />
+        <TextView
+            android:id="@+id/user_name_o"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/capriola"
+            android:text="Jaime"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="40sp"
+            android:gravity="center"/>
+    </FrameLayout>
 
-
-    <TextView
-        android:id="@+id/user_career"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text=""
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_name" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="292dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_career"
-        app:layout_constraintVertical_bias="0.0">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/user_email_layout"
@@ -70,12 +40,10 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
+            android:layout_gravity="center">
 
             <ImageView
-                android:id="@+id/user_email_icon"
+                android:id="@+id/user_email_icon_o"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_email_black" />
@@ -88,40 +56,35 @@
                 android:text="@string/sample_email"
                 android:textSize="18sp" />
         </LinearLayout>
+    </FrameLayout>
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/user_address_layout"
+    <LinearLayout
+        android:id="@+id/user_address_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/user_address_icon_o"
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_call_black_24dp" />
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-            <ImageView
-                android:id="@+id/user_address_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_call_black_24dp" />
+            android:layout_gravity="center_vertical">
 
             <TextView
                 android:id="@+id/user_phone_o"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:text=""
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/user_address_icon"
-                tools:layout_editor_absoluteY="0dp" />
-
-
-        </android.support.constraint.ConstraintLayout>
-
+                android:layout_height="match_parent"
+                android:text="+56967850482"
+                android:gravity="center_vertical"
+                android:textSize="18sp" />
+        </FrameLayout>
     </LinearLayout>
 
 
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -93,7 +93,7 @@ public class ProfileFragment extends Fragment {
         final Button edit_button = (Button) view.findViewById(R.id.buttonEdit);
         final Button ok_button = (Button) actual_view.findViewById(R.id.button_ok);
         final Button cancel_button = (Button) actual_view.findViewById(R.id.button_cancel);
-        final ConstraintLayout phone_call = actual_view.findViewById(R.id.user_address_layout);
+        final LinearLayout phone_call = actual_view.findViewById(R.id.user_address_layout);
         final LinearLayout email = actual_view.findViewById(R.id.user_email_layout);
         edit_button.setOnClickListener(new View.OnClickListener() {
             @Override

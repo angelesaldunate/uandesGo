@@ -92,7 +92,7 @@ public class OtherUserProfileFragment extends Fragment {
 
             }
         }).start();
-        final ConstraintLayout phone_call = actual_view.findViewById(R.id.user_address_layout);
+        final LinearLayout phone_call = actual_view.findViewById(R.id.user_address_layout);
         final LinearLayout email = actual_view.findViewById(R.id.user_email_layout);
         phone_call.setOnClickListener(new View.OnClickListener() {
             @Override
