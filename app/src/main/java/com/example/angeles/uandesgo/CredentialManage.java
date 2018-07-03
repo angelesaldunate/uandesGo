@@ -30,9 +30,7 @@ public class CredentialManage {
     }
     public void borrarCredenciales(){
         SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("email_guardado");
-        editor.remove("password_guardada");
-        editor.remove("nombre_guardado");
+        editor.clear();
         editor.apply();
     }
 
