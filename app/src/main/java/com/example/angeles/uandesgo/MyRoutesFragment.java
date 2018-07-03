@@ -13,12 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.angeles.uandesgo.db.AppDatabase;
+import com.example.angeles.uandesgo.db.RequestedRoute.RequestedRoute;
 import com.example.angeles.uandesgo.db.Route.Route;
 import com.example.angeles.uandesgo.db.User.User;
 
@@ -30,6 +32,7 @@ public class MyRoutesFragment extends Fragment {
     private iComunicator mListener;
     private AppDatabase appDatabase;
     private SharedPreferences sharedPreferences;
+    private CredentialManage credentialManager;
 
     @Override
     public void onAttach(Context context) {
@@ -48,6 +51,7 @@ public class MyRoutesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         appDatabase = mListener.getDb();
         sharedPreferences = mListener.getSharedPreferences();
+        credentialManager = mListener.getCredentialManage();
     }
 
     @Override
@@ -99,10 +103,21 @@ public class MyRoutesFragment extends Fragment {
                 });
                 lv.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                     @Override
-                    public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                    public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
                         switch (index) {
                             case 0:
-                                // open
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        int ide_route = all.get(position).getRid();
+                                        Route route = appDatabase.routeDao().getRoutebyId(ide_route);
+                                        appDatabase.routeDao().delete(route.getRid());
+                                    }
+                                }).start();
+
+                                Toast.makeText(getContext(),"Ruta Eliminada",Toast.LENGTH_SHORT).show();
+                                Fragment requested_fragment = new MyRoutesFragment();
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,requested_fragment).addToBackStack("null").commit();
                                 break;
                         }
                         // false : close the menu; true : not close the menu

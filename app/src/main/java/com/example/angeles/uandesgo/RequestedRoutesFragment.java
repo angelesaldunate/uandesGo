@@ -118,7 +118,7 @@ public class  RequestedRoutesFragment extends Fragment {
                                             }
                                         }).start();
 
-                                        Toast.makeText(getContext(),"Ruta Eliminada",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(),"Pedido Eliminado",Toast.LENGTH_SHORT).show();
                                         Fragment requested_fragment = new RequestedRoutesFragment();
                                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,requested_fragment).addToBackStack("null").commit();
 

@@ -33,4 +33,7 @@ public interface RouteDao {
 
     @Query("DELETE FROM route")
     void deleteAll();
+
+    @Query("DELETE FROM route WHERE rid=:rid")
+    void delete(int rid);
 }
