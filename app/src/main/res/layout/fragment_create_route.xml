@@ -30,7 +30,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_weight="1" >
+            android:layout_weight="1"
+           >
 
             <LinearLayout
                 android:id="@+id/linearLayout_direction"
@@ -47,7 +48,7 @@
                     android:textStyle="bold"
                     android:text="Voy..."
                     android:textAlignment="center"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -91,7 +92,7 @@
                     android:fontFamily="@font/capriola"
                     android:textAlignment="center"
                     android:text="...la UAndes"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -102,24 +103,8 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView_sector"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/capriola"
-                    android:text="@string/sector"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:textSize="15sp" />
 
-                <Spinner
-                    android:id="@+id/spinner_sectors"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/capriola"
-                    android:entries="@array/Sectors"
-                    android:spinnerMode="dialog"
-                    android:textAlignment="center" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -137,7 +122,7 @@
                     android:textAlignment="center"
                     android:fontFamily="@font/capriola"
                     android:text="@string/capacity"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/editText_capacity"

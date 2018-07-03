@@ -27,6 +27,11 @@ public interface PlaceDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(Place... place);
 
+    @Query("SELECT zone FROM place GROUP BY zone")
+    List<String> getNamesZones();
+
+    @Query("Select pid FROM place WHERE zone=:zone")
+    List<Integer> getIndexByPlace(String zone);
 
     @Query("DELETE FROM place")
     void deleteAll();

@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
@@ -23,6 +25,7 @@ import com.example.angeles.uandesgo.db.Place.Place;
 import com.example.angeles.uandesgo.db.Route.Route;
 import com.example.angeles.uandesgo.db.User.User;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -58,16 +61,21 @@ public class CreateRouteFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        final View final_view = view;
         new Thread(new Runnable() {
             @Override
             public void run() {
                 all = appDatabase.placeDao().getAllPlaces();
                 String value1 = sharedPreferences.getString("email_guardado", null);
                 final User u = appDatabase.userDao().getOneUser(value1);
+
+
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
+
+
                         final PlaceAdapter adapter = new PlaceAdapter(getContext(), all);
                         listView.setAdapter(adapter);
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -66,9 +66,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (appDatabase.userDao().getAllUser().size() == 0) {
+                if (appDatabase.placeDao().getAllPlaces().size() == 0) {
                     appDatabase.placeDao().insertAll(new Place("Escuela Militar", "Oriente"));
                     appDatabase.placeDao().insertAll(new Place("Los Dominicos", "Oriente"));
+                    appDatabase.placeDao().insertAll(new Place("Republica", "Centro"));
+                    appDatabase.placeDao().insertAll(new Place("La Moneda", "Centro"));
+                    appDatabase.placeDao().insertAll(new Place("Plaza de Maipu", "Sur Poniente"));
+                    appDatabase.placeDao().insertAll(new Place("San Pablo", "Sur Poniente"));
                 }
             }
         }).start();

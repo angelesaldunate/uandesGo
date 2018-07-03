@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,7 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.angeles.uandesgo.db.AppDatabase;
@@ -34,6 +38,8 @@ public class SearchRouteFragment extends Fragment {
     private List<Route> all;
     private iComunicator mListener;
     private CredentialManage credentialManager;
+    private String zone_name = null;
+    private List<Route> filtered_routes;
 
     public SearchRouteFragment() {
         // Required empty public constructor
@@ -48,29 +54,63 @@ public class SearchRouteFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
 
+
+        final Bundle zone = this.getArguments();
+        if (zone != null) {
+            zone_name = zone.getString("zone_name");
+        }
+
+        final View final_view = view;
         final ListView lv = (ListView) view.findViewById(R.id.list_allRoutes);
         final String value1 = credentialManager.getEmail();
         Log.d("MAAAAAILL",value1, null);
 
+
         new Thread(new Runnable() {
             @Override
             public void run() {
+                SystemClock.sleep(2000);
                 final User u = appDatabase.userDao().getOneUser(value1);
                 all = appDatabase.routeDao().getAllNotMineRoutes(u.getUid());
-                final List<Route> filtered_routes = new ArrayList<Route>() ;
+                List<Route> filtered_routes1 = new ArrayList<Route>() ;
                 Long currentTime = System.currentTimeMillis();
                 for (int i = 0; i<all.size();i++){
                     Route posible_route = all.get(i);
                     long timeDiff = Long.valueOf(String.valueOf(posible_route.getDep_time()))+15*60*1000 - currentTime;
                     if (timeDiff > 0) {
-                        filtered_routes.add(all.get(i));
+                        filtered_routes1.add(all.get(i));
                     }
                 }
+                if (zone_name!= null){
+
+                    List<Route> filtered_routes_byzone = new ArrayList<Route>() ;
+                    List<Integer> places_ides = appDatabase.placeDao().getIndexByPlace(zone_name);
+
+                    for (int i = 0; i<filtered_routes1.size();i++){
+                        Route posible_route = filtered_routes1.get(i);
+                        if (places_ides.contains(posible_route.getPlaceId())){
+                            filtered_routes_byzone.add(posible_route);
+                        }
+                    }
+
+                    filtered_routes= filtered_routes_byzone;
+
+                }else {
+                    filtered_routes = filtered_routes1;
+                }
+
+                final List<String> spinnerArray =  appDatabase.placeDao().getNamesZones();
 
                 Handler mainHandler = new Handler(getActivity().getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
+                        //llenando el spinner
+                        ArrayAdapter<String> adapterspinner = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);
+                        adapterspinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        Spinner sItems = (Spinner) final_view.findViewById(R.id.spinner_sectors_search);
+                        sItems.setAdapter(adapterspinner);
+                        //llenando la lista
                         final RoutesAdapter adapter = new RoutesAdapter(getContext(), filtered_routes);
                         lv.setAdapter(adapter);
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,6 +131,22 @@ public class SearchRouteFragment extends Fragment {
 
             }
         }) .start();
+
+        Button apply = (Button) view.findViewById(R.id.button_apply);
+        apply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Spinner spinner = (Spinner) final_view.findViewById(R.id.spinner_sectors_search);
+                String text = spinner.getSelectedItem().toString();
+                Log.d("ZONENAMEEEE",text);
+                Fragment filter = new SearchRouteFragment();
+                Bundle ide = new Bundle();
+                ide.putString("zone_name",text);
+                filter.setArguments(ide);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.framenew,filter).addToBackStack("null").commit();
+
+            }
+        });
     }
 
     @Override
@@ -113,4 +169,7 @@ public class SearchRouteFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
+
 }

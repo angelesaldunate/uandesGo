@@ -83,41 +83,24 @@ public class  RequestedRoutesFragment extends Fragment {
 
                             @Override
                             public void create(SwipeMenu menu) {
-                                // create "open" item
                                 SwipeMenuItem openItem = new SwipeMenuItem(getContext());
-                                // set item background
                                 openItem.setBackground(new ColorDrawable(Color.TRANSPARENT));
-                                // set item width
                                 openItem.setWidth(170);
-                                // set item title
                                 openItem.setIcon(R.drawable.ic_delete);
-                                // set item title fontsize
                                 openItem.setTitleSize(24);
-                                // set item title font color
                                 openItem.setTitleColor(Color.RED);
-                                // add to menu
                                 menu.addMenuItem(openItem);
-
                                 SwipeMenuItem openItem1 = new SwipeMenuItem(getContext());
-                                // set item background
                                 openItem1.setBackground(new ColorDrawable(Color.TRANSPARENT));
-                                // set item width
                                 openItem1.setWidth(170);
-                                // set item title
                                 openItem1.setTitle("Perfil");
-                                // set item title fontsize
                                 openItem1.setTitleSize(18);
-                                // set item title font color
                                 openItem1.setTitleColor(Color.BLACK);
-                                // add to menu
                                 menu.addMenuItem(openItem1);
-
-
 
                             }
                         };
 
-// set creator
                         listView.setMenuCreator(creator);
                         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                             @Override
