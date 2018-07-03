@@ -86,11 +86,11 @@ public class  RequestedRoutesFragment extends Fragment {
                                 // create "open" item
                                 SwipeMenuItem openItem = new SwipeMenuItem(getContext());
                                 // set item background
-                                openItem.setBackground(new ColorDrawable(Color.RED));
+                                openItem.setBackground(new ColorDrawable(Color.TRANSPARENT));
                                 // set item width
                                 openItem.setWidth(170);
                                 // set item title
-                                openItem.setIcon(R.drawable.ic_delete_white);
+                                openItem.setIcon(R.drawable.ic_delete);
                                 // set item title fontsize
                                 openItem.setTitleSize(24);
                                 // set item title font color
@@ -100,8 +100,7 @@ public class  RequestedRoutesFragment extends Fragment {
 
                                 SwipeMenuItem openItem1 = new SwipeMenuItem(getContext());
                                 // set item background
-                                openItem1.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                                        0xCE)));
+                                openItem1.setBackground(new ColorDrawable(Color.TRANSPARENT));
                                 // set item width
                                 openItem1.setWidth(170);
                                 // set item title
