@@ -45,10 +45,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/capriola"
-                    android:textStyle="bold"
                     android:text="Voy..."
                     android:textAlignment="center"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -122,7 +122,7 @@
                     android:textAlignment="center"
                     android:fontFamily="@font/capriola"
                     android:text="@string/capacity"
-                    android:textSize="18sp" />
+                    android:textSize="20sp" />
 
                 <EditText
                     android:id="@+id/editText_capacity"
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:textSize="12sp"
+                    android:textSize="18sp"
                     android:inputType="number"/>
             </LinearLayout>
 
