@@ -69,7 +69,7 @@ public class SearchRouteFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SystemClock.sleep(2000);
+                SystemClock.sleep(1000);
                 final User u = appDatabase.userDao().getOneUser(value1);
                 all = appDatabase.routeDao().getAllNotMineRoutes(u.getUid());
                 List<Route> filtered_routes1 = new ArrayList<Route>() ;
