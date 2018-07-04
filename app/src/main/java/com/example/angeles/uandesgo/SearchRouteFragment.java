@@ -63,7 +63,6 @@ public class SearchRouteFragment extends Fragment {
         final View final_view = view;
         final ListView lv = (ListView) view.findViewById(R.id.list_allRoutes);
         final String value1 = credentialManager.getEmail();
-        Log.d("MAAAAAILL",value1, null);
 
 
         new Thread(new Runnable() {
@@ -84,17 +83,18 @@ public class SearchRouteFragment extends Fragment {
                 if (zone_name!= null){
 
                     if (zone_name!= "Sin Filtro"){
-                    List<Route> filtered_routes_byzone = new ArrayList<Route>() ;
-                    List<Integer> places_ides = appDatabase.placeDao().getIndexByPlace(zone_name);
+                        List<Route> filtered_routes_byzone = new ArrayList<Route>() ;
+                        List<Integer> places_ides = appDatabase.placeDao().getIndexByPlace(zone_name);
 
-                    for (int i = 0; i<filtered_routes1.size();i++){
-                        Route posible_route = filtered_routes1.get(i);
-                        if (places_ides.contains(posible_route.getPlaceId())){
-                            filtered_routes_byzone.add(posible_route);
+                        for (int i = 0; i<filtered_routes1.size();i++){
+                            Route posible_route = filtered_routes1.get(i);
+                            if (places_ides.contains(posible_route.getPlaceId())){
+                                filtered_routes_byzone.add(posible_route);
+                            }
                         }
-                    }
 
-                    filtered_routes= filtered_routes_byzone;}
+                        filtered_routes= filtered_routes_byzone;
+                    }
                     else{
                         filtered_routes= filtered_routes1;
                     }
